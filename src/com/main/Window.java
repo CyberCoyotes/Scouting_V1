@@ -46,7 +46,7 @@ public class Window extends JFrame implements ActionListener {
 		
 		add(ts);
 		ts.setBounds(130, 5, 120, 20);
-		
+		//
 		add(showScore);
 		showScore.setBounds(130, 30, 120, 20);
 		
