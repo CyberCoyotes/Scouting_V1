@@ -2,17 +2,11 @@ package com.main;
 
 import static java.lang.System.out;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Teams {
 	
@@ -28,11 +22,16 @@ public class Teams {
 		
 		int value = 0;
 		boolean notFound = false;
-		while(teams[value] != teamNumber && !notFound) {
-			value++;
-			if(value>=39) {
-				notFound = true;
+		try {
+			while(teams[value] != teamNumber && !notFound) {
+				value++;
+				if(value>39) {
+					notFound = true;
+				}
 			}
+		} catch(ArrayIndexOutOfBoundsException ex) {
+			Warning warning = new Warning("Too many teams. The maximum is 40 teams");
+			warning.setVisible(true);
 		}
 		if(notFound) {
 			addTeam(teamNumber, score, gear);
@@ -47,19 +46,18 @@ public class Teams {
 	void addTeam(int teamNumber, int score, int gear) {
 		try {
 			int value = 0;
+			boolean flag = false;
 			while(teams[value] != 0 && value <= teams.length) {
 				value++;
-				out.println(teams[value]);
 			}
 			
-			if(teams[value] == 0) {
-				out.println("Slot found!");
+			if(flag) {
 				teams[value] = teamNumber;
 				scores[value] = score;
 				gears[value] = gear;
-			} else {
-				out.println("Failed");
 			}
+			Warning warning = new Warning(Integer.toString(teams[value]));
+			warning.setVisible(true);
 		} catch (java.lang.ArrayIndexOutOfBoundsException ex) {
 			
 		}
@@ -81,7 +79,71 @@ public class Teams {
 		}
 	}
 	
-	String[] sort() {
+	String[] sortByGears() {
+		int n = gears.length;  
+        int temp = 0;
+        int temp2 = 0;
+        int temp3 = 0;
+        for(int i=0; i < n; i++){  
+	        for(int j=1; j < (n-i); j++){  
+		        if(gears[j-1] < gears[j]){  
+			        temp = scores[j-1];
+			        temp2 = teams[j-1];
+			        temp3 = gears[j-1];
+			        
+			        scores[j-1] = scores[j];
+			        teams[j-1] = teams[j];
+			        gears[j-1] = gears[j];
+			        
+			        scores[j] = temp;
+			        teams[j] = temp2;
+			        gears[j] = temp3;
+		        }  
+	        }  
+        }
+        String[] string = new String[40];
+        for(int i = 0; i < n; i++) {
+        	if(teams[i] != 0) {
+        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i];
+        		string[i] = s + "\n";
+        	}
+        }
+        return string;
+	}
+	
+	String[] sortByTeams() {
+		int n = teams.length;  
+        int temp = 0;
+        int temp2 = 0;
+        int temp3 = 0;
+        for(int i=0; i < n; i++){  
+	        for(int j=1; j < (n-i); j++){  
+		        if(teams[j-1] > teams[j]){  
+			        temp = scores[j-1];
+			        temp2 = teams[j-1];
+			        temp3 = gears[j-1];
+			        
+			        scores[j-1] = scores[j];
+			        teams[j-1] = teams[j];
+			        gears[j-1] = gears[j];
+			        
+			        scores[j] = temp;
+			        teams[j] = temp2;
+			        gears[j] = temp3;
+		        }  
+	        }  
+        }
+        String[] string = new String[40];
+        for(int i = 0; i < n; i++) {
+        	if(teams[i] != 0) {
+        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i];
+        		string[i] = s + "\n";
+        	}
+        }
+        return string;
+	}
+	
+	String[] sortByScore() {
 		int n = scores.length;  
         int temp = 0;
         int temp2 = 0;
@@ -107,8 +169,7 @@ public class Teams {
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
         		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i];
-        		string[i] = s;
-        		out.println("Team " + teams[i] + " score " + scores[i] + " gears " + gears[i]);
+        		string[i] = s + "\n";
         	}
         }
         return string;
@@ -170,6 +231,7 @@ public class Teams {
 		save();
 	}
 	
+	@SuppressWarnings("resource")
 	void load() {
 		try {
 			FileReader teamReader1 = new FileReader("teams.txt");
@@ -177,7 +239,6 @@ public class Teams {
 			
 			for(int i = 0; i < teams.length; i++) {
 				teams[i] = Integer.parseInt(teamReader2.readLine());
-				out.println(teams[i]);
 			}
 			//
 			FileReader scoreReader1 = new FileReader("scores.txt");
@@ -185,7 +246,6 @@ public class Teams {
 			
 			for(int i = 0; i < scores.length; i++) {
 				scores[i] = Integer.parseInt(scoreReader2.readLine());
-				out.println(scores[i]);
 			}
 			//
 			FileReader gearReader1 = new FileReader("gears.txt");
@@ -193,7 +253,6 @@ public class Teams {
 			
 			for(int i = 0; i < gears.length; i++) {
 				gears[i] = Integer.parseInt(gearReader2.readLine());
-				out.println(gears[i]);
 			}
 		} catch(IOException ex) {
 			out.println("ERRROR!");
