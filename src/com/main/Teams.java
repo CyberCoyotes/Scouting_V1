@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 
 public class Teams {
 	
@@ -19,13 +20,14 @@ public class Teams {
 	int amount;
 	
 	public Teams() {
+		load();
 	}
 	
 	void doAverages() {
 		for(int i = 0; i < teams.length; i++) {
 			if(numMat[i] != 0) {
-				scoAve[i] = scores[i] / numMat[i];
-				gearAve[i] = gears[i] / numMat[i];
+				scoAve[i] = (double) scores[i] / numMat[i];
+				gearAve[i] = (double) gears[i] / numMat[i];
 			}
 		}
 	}
@@ -80,24 +82,8 @@ public class Teams {
 		}
 	}
 	
-	void removeTeam(int teamNumber) {
-		int value = 0;
-		while(teams[value] != teamNumber && value < teams.length) {
-			value++;
-		}
-		
-		if(teams[value] == teamNumber) {
-			teams[value] = 0;
-			scores[value] = 0;
-			gears[value] = 0;
-		} else {
-			Warning teamNotFound = new Warning("Team not found: " + teamNumber);
-			teamNotFound.setVisible(true);
-		}
-	}
-	
-	String[] sortByGears() {
-		int n = gears.length;  
+	String[] sort(double[] by) {
+		int n = by.length;  
         int temp = 0;
         int temp2 = 0;
         int temp3 = 0;
@@ -105,8 +91,8 @@ public class Teams {
         double temp5 = 0;
         double temp6 = 0;
         for(int i=0; i < n; i++){  
-	        for(int j=1; j < (n-i); j++){  
-		        if(gears[j-1] < gears[j]){  
+	        for(int j=1; j < (n-i); j++) {
+		        if(by[j-1] < by[j]){  
 			        temp = scores[j-1];
 			        temp2 = teams[j-1];
 			        temp3 = gears[j-1];
@@ -127,21 +113,21 @@ public class Teams {
 			        numMat[j] = temp4;
 			        scoAve[j] = temp5;
 			        gearAve[j] = temp6;
-		        }  
+		        }
 	        }  
         }
         String[] string = new String[40];
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
-        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i];
+        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i] + " average score " + scoAve[i] + " average gears " + gearAve[i];
         		string[i] = s + "\n";
         	}
         }
         return string;
 	}
 	
-	String[] sortByTeams() {
-		int n = teams.length;  
+	String[] sort(int[] by) {
+		int n = by.length;  
         int temp = 0;
         int temp2 = 0;
         int temp3 = 0;
@@ -149,98 +135,64 @@ public class Teams {
         double temp5 = 0;
         double temp6 = 0;
         for(int i=0; i < n; i++){  
-	        for(int j=1; j < (n-i); j++){  
-		        if(teams[j-1] > teams[j]){  
-		        	temp = scores[j-1];
-			        temp2 = teams[j-1];
-			        temp3 = gears[j-1];
-			        temp4 = numMat[j-1];
-			        temp5 = scoAve[j-1];
-			        temp6 = gearAve[j-1];
-			        
-			        scores[j-1] = scores[j];
-			        teams[j-1] = teams[j];
-			        gears[j-1] = gears[j];
-			        numMat[j-1] = numMat[j];
-			        scoAve[j-1] = scoAve[j];
-			        gearAve[j-1] = gearAve[j];
-			        
-			        scores[j] = temp;
-			        teams[j] = temp2;
-			        gears[j] = temp3;
-			        numMat[j] = temp4;
-			        scoAve[j] = temp5;
-			        gearAve[j] = temp6;
-		        }  
+	        for(int j=1; j < (n-i); j++) {
+	        	if(by == teams) {
+			        if(by[j-1] > by[j]){  
+				        temp = scores[j-1];
+				        temp2 = teams[j-1];
+				        temp3 = gears[j-1];
+				        temp4 = numMat[j-1];
+				        temp5 = scoAve[j-1];
+				        temp6 = gearAve[j-1];
+				        
+				        scores[j-1] = scores[j];
+				        teams[j-1] = teams[j];
+				        gears[j-1] = gears[j];
+				        numMat[j-1] = numMat[j];
+				        scoAve[j-1] = scoAve[j];
+				        gearAve[j-1] = gearAve[j];
+				        
+				        scores[j] = temp;
+				        teams[j] = temp2;
+				        gears[j] = temp3;
+				        numMat[j] = temp4;
+				        scoAve[j] = temp5;
+				        gearAve[j] = temp6;
+			        }
+	        	} else {
+	        		if(by[j-1] < by[j]){  
+				        temp = scores[j-1];
+				        temp2 = teams[j-1];
+				        temp3 = gears[j-1];
+				        temp4 = numMat[j-1];
+				        temp5 = scoAve[j-1];
+				        temp6 = gearAve[j-1];
+				        
+				        scores[j-1] = scores[j];
+				        teams[j-1] = teams[j];
+				        gears[j-1] = gears[j];
+				        numMat[j-1] = numMat[j];
+				        scoAve[j-1] = scoAve[j];
+				        gearAve[j-1] = gearAve[j];
+				        
+				        scores[j] = temp;
+				        teams[j] = temp2;
+				        gears[j] = temp3;
+				        numMat[j] = temp4;
+				        scoAve[j] = temp5;
+				        gearAve[j] = temp6;
+			        }
+	        	}
 	        }  
         }
         String[] string = new String[40];
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
-        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i];
+        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i] + " average score " + scoAve[i] + " average gears " + gearAve[i];
         		string[i] = s + "\n";
         	}
         }
         return string;
-	}
-	
-	String[] sortByScore() {
-		int n = scores.length;  
-        int temp = 0;
-        int temp2 = 0;
-        int temp3 = 0;
-        int temp4 = 0;
-        double temp5 = 0;
-        double temp6 = 0;
-        for(int i=0; i < n; i++){  
-	        for(int j=1; j < (n-i); j++){  
-		        if(scores[j-1] < scores[j]){  
-		        	temp = scores[j-1];
-			        temp2 = teams[j-1];
-			        temp3 = gears[j-1];
-			        temp4 = numMat[j-1];
-			        temp5 = scoAve[j-1];
-			        temp6 = gearAve[j-1];
-			        
-			        scores[j-1] = scores[j];
-			        teams[j-1] = teams[j];
-			        gears[j-1] = gears[j];
-			        numMat[j-1] = numMat[j];
-			        scoAve[j-1] = scoAve[j];
-			        gearAve[j-1] = gearAve[j];
-			        
-			        scores[j] = temp;
-			        teams[j] = temp2;
-			        gears[j] = temp3;
-			        numMat[j] = temp4;
-			        scoAve[j] = temp5;
-			        gearAve[j] = temp6;
-		        }  
-	        }  
-        }
-        String[] string = new String[40];
-        for(int i = 0; i < n; i++) {
-        	if(teams[i] != 0) {
-        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i];
-        		string[i] = s + "\n";
-        	}
-        }
-        return string;
-	}
-	
-	String getTeamScore(int teamNumber) {
-		int value = 0;
-		while(teams[value] != teamNumber && value < teams.length-1) {
-			value++;
-		}
-		if(value == teams.length-1) {
-			Warning teamNotFound = new Warning("Team not found: " + teamNumber);
-			teamNotFound.setVisible(true);
-			return "";
-		} else {
-			String s = "Score: " + scores[value] + " Gears: " + gears[value];
-			return s;
-		}
 	}
 	
 	void save() {
@@ -276,7 +228,6 @@ public class Teams {
 			gearAve2.close();
 			
 		} catch(IOException ex) {
-			out.println("ERROR!");
 		}
 	}
 	
@@ -285,8 +236,10 @@ public class Teams {
 			teams[i] = 0;
 			scores[i] = 0;
 			gears[i] = 0;
+			numMat[i] = 0;
+			scoAve[i] = 0;
+			gearAve[i] = 0;
 		}
-		save();
 	}
 	
 	@SuppressWarnings("resource")
@@ -318,8 +271,15 @@ public class Teams {
 		} catch(IOException ex) {
 			out.println("ERRROR!");
 		} catch(java.lang.NumberFormatException ex) {
+			@SuppressWarnings("unused")
 			Warning warning = new Warning("Invalid Number Format. Check the text file for non-number data");
-			warning.setVisible(true);
+		}
+	}
+	
+	void fillRandom() {
+		Random random = new Random();
+		for(int i = 0; i < teams.length; i ++) {
+			updateTeam(random.nextInt(7000), random.nextInt(200), random.nextInt(8));
 		}
 	}
 }
