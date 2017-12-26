@@ -7,15 +7,16 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
+@SuppressWarnings("unused")
 public class Scouting_V1 {
 
 	public static void main(String[] args) {
 		Window window = new Window(1600, 900);
 		//window.setLocation(400, 225);
-		window.setUndecorated(true);
+		//window.setUndecorated(true);
 		window.setVisible(true);
 		Random random = new Random();
-		int sides = 5;
+		int sides = 102;
 		int x[] = new int[sides];
 		int y[] = new int[sides];
 		Thread thread = new Thread(() -> {
@@ -27,13 +28,13 @@ public class Scouting_V1 {
 				Polygon polygon = new Polygon(x, y, sides);
 				window.setShape(polygon);
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(10000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		});
-		thread.start();
+		//thread.start();
 	}
 }

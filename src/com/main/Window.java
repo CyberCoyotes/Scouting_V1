@@ -18,10 +18,10 @@ public class Window extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	JButton submitButton = new JButton("Submit");
-	JTextField teamNumField = new JTextField("Team number");
-	JTextField teamScore = new JTextField("Team score");
+	JTextField teamNumField = new JTextField("");
+	JTextField teamScore = new JTextField("");
 	JTextField ts = new JTextField("Check a Score");
-	JTextField gearText = new JTextField("Num Gears");
+	JTextField gearText = new JTextField("");
 	JButton showScore = new JButton("Show score");
 	JButton sort = new JButton("Sort");
 	JButton clear = new JButton("Delete All Info");

@@ -12,54 +12,71 @@ public class Teams {
 	
 	int teams[] = new int[40];
 	int scores[] = new int[40];
+	int numMat[] = new int[40];
+	double scoAve[] = new double[40];
+	double gearAve[] = new double[40];
 	int gears[] = new int[40];
 	int amount;
 	
 	public Teams() {
 	}
 	
+	void doAverages() {
+		for(int i = 0; i < teams.length; i++) {
+			if(numMat[i] != 0) {
+				scoAve[i] = scores[i] / numMat[i];
+				gearAve[i] = gears[i] / numMat[i];
+			}
+		}
+	}
+	
 	void updateTeam(int teamNumber, int score, int gear) {
 		
 		int value = 0;
-		boolean notFound = false;
-		try {
-			while(teams[value] != teamNumber && !notFound) {
-				value++;
-				if(value>39) {
-					notFound = true;
-				}
+		boolean found = false;
+		
+		for(int i = 0; i < teams.length; i++) {
+			if(teams[i] == teamNumber && !found) {
+				value = i;
+				found = true;
 			}
-		} catch(ArrayIndexOutOfBoundsException ex) {
-			Warning warning = new Warning("Too many teams. The maximum is 40 teams");
-			warning.setVisible(true);
 		}
-		if(notFound) {
-			addTeam(teamNumber, score, gear);
-		} else {
+		
+		if(found) {
 			int oldScore = scores[value];
 			int oldGear = gears[value];
 			scores[value] = oldScore + score;
 			gears[value] = oldGear + gear;
+			numMat[value]++;
+		} else {
+			addTeam(teamNumber, score, gear);
 		}
+		doAverages();
 	}
 	
 	void addTeam(int teamNumber, int score, int gear) {
 		try {
 			int value = 0;
-			boolean flag = false;
-			while(teams[value] != 0 && value <= teams.length) {
-				value++;
+			boolean emptySlot = false;
+			for(int i = 0; i < teams.length; i++) {
+				if(teams[i] == 0 && !emptySlot) {
+					value = i;
+					emptySlot = true;
+				}
 			}
 			
-			if(flag) {
+			if(emptySlot) {
 				teams[value] = teamNumber;
 				scores[value] = score;
 				gears[value] = gear;
+				numMat[value]++;
+			} else {
+				@SuppressWarnings("unused")
+				Warning warning = new Warning("Too many teams. The maximum number of teams is " + teams.length);
 			}
-			Warning warning = new Warning(Integer.toString(teams[value]));
-			warning.setVisible(true);
-		} catch (java.lang.ArrayIndexOutOfBoundsException ex) {
 			
+		} catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -84,20 +101,32 @@ public class Teams {
         int temp = 0;
         int temp2 = 0;
         int temp3 = 0;
+        int temp4 = 0;
+        double temp5 = 0;
+        double temp6 = 0;
         for(int i=0; i < n; i++){  
 	        for(int j=1; j < (n-i); j++){  
 		        if(gears[j-1] < gears[j]){  
 			        temp = scores[j-1];
 			        temp2 = teams[j-1];
 			        temp3 = gears[j-1];
+			        temp4 = numMat[j-1];
+			        temp5 = scoAve[j-1];
+			        temp6 = gearAve[j-1];
 			        
 			        scores[j-1] = scores[j];
 			        teams[j-1] = teams[j];
 			        gears[j-1] = gears[j];
+			        numMat[j-1] = numMat[j];
+			        scoAve[j-1] = scoAve[j];
+			        gearAve[j-1] = gearAve[j];
 			        
 			        scores[j] = temp;
 			        teams[j] = temp2;
 			        gears[j] = temp3;
+			        numMat[j] = temp4;
+			        scoAve[j] = temp5;
+			        gearAve[j] = temp6;
 		        }  
 	        }  
         }
@@ -116,20 +145,32 @@ public class Teams {
         int temp = 0;
         int temp2 = 0;
         int temp3 = 0;
+        int temp4 = 0;
+        double temp5 = 0;
+        double temp6 = 0;
         for(int i=0; i < n; i++){  
 	        for(int j=1; j < (n-i); j++){  
 		        if(teams[j-1] > teams[j]){  
-			        temp = scores[j-1];
+		        	temp = scores[j-1];
 			        temp2 = teams[j-1];
 			        temp3 = gears[j-1];
+			        temp4 = numMat[j-1];
+			        temp5 = scoAve[j-1];
+			        temp6 = gearAve[j-1];
 			        
 			        scores[j-1] = scores[j];
 			        teams[j-1] = teams[j];
 			        gears[j-1] = gears[j];
+			        numMat[j-1] = numMat[j];
+			        scoAve[j-1] = scoAve[j];
+			        gearAve[j-1] = gearAve[j];
 			        
 			        scores[j] = temp;
 			        teams[j] = temp2;
 			        gears[j] = temp3;
+			        numMat[j] = temp4;
+			        scoAve[j] = temp5;
+			        gearAve[j] = temp6;
 		        }  
 	        }  
         }
@@ -148,20 +189,32 @@ public class Teams {
         int temp = 0;
         int temp2 = 0;
         int temp3 = 0;
+        int temp4 = 0;
+        double temp5 = 0;
+        double temp6 = 0;
         for(int i=0; i < n; i++){  
 	        for(int j=1; j < (n-i); j++){  
 		        if(scores[j-1] < scores[j]){  
-			        temp = scores[j-1];
+		        	temp = scores[j-1];
 			        temp2 = teams[j-1];
 			        temp3 = gears[j-1];
+			        temp4 = numMat[j-1];
+			        temp5 = scoAve[j-1];
+			        temp6 = gearAve[j-1];
 			        
 			        scores[j-1] = scores[j];
 			        teams[j-1] = teams[j];
 			        gears[j-1] = gears[j];
+			        numMat[j-1] = numMat[j];
+			        scoAve[j-1] = scoAve[j];
+			        gearAve[j-1] = gearAve[j];
 			        
 			        scores[j] = temp;
 			        teams[j] = temp2;
 			        gears[j] = temp3;
+			        numMat[j] = temp4;
+			        scoAve[j] = temp5;
+			        gearAve[j] = temp6;
 		        }  
 	        }  
         }
@@ -180,7 +233,7 @@ public class Teams {
 		while(teams[value] != teamNumber && value < teams.length-1) {
 			value++;
 		}
-		if(value == 39) {
+		if(value == teams.length-1) {
 			Warning teamNotFound = new Warning("Team not found: " + teamNumber);
 			teamNotFound.setVisible(true);
 			return "";
@@ -193,29 +246,34 @@ public class Teams {
 	void save() {
 		try {
 			FileWriter teamWriter1 = new FileWriter("teams.txt");
+			FileWriter scoreWriter1 = new FileWriter("scores.txt");
+			FileWriter gearWriter1 = new FileWriter("gears.txt");
+			FileWriter numberMatches1 = new FileWriter("numMat.txt");
+			FileWriter scoAve1 = new FileWriter("scoAve.txt");
+			FileWriter gearAve1 = new FileWriter("gearAve.txt");
+			
 			PrintWriter teamWriter2 = new PrintWriter(teamWriter1);
+			PrintWriter scoreWriter2 = new PrintWriter(scoreWriter1);
+			PrintWriter gearWriter2 = new PrintWriter(gearWriter1);			
+			PrintWriter numberMatches2 = new PrintWriter(numberMatches1);			
+			PrintWriter scoAve2 = new PrintWriter(scoAve1);			
+			PrintWriter gearAve2 = new PrintWriter(gearAve1);
 			
 			for(int i = 0; i < teams.length; i++) {
 				teamWriter2.println(teams[i]);
-			}
-			teamWriter1.close();
-			//
-			FileWriter scoreWriter1 = new FileWriter("scores.txt");
-			PrintWriter scoreWriter2 = new PrintWriter(scoreWriter1);
-			
-			for(int i = 0; i < scores.length; i++) {
 				scoreWriter2.println(scores[i]);
-			}
-			scoreWriter1.close();
-			//
-			FileWriter gearWriter1 = new FileWriter("gears.txt");
-			PrintWriter gearWriter2 = new PrintWriter(gearWriter1);
-			
-			for(int i = 0; i < gears.length; i++) {
 				gearWriter2.println(gears[i]);
+				numberMatches2.println(numMat[i]);
+				scoAve2.println(scoAve[i]);
+				gearAve2.println(gearAve[i]);
 			}
-			gearWriter1.close();
 			
+			teamWriter2.close();
+			scoreWriter2.close();
+			gearWriter2.close();
+			numberMatches2.close();
+			scoAve2.close();
+			gearAve2.close();
 			
 		} catch(IOException ex) {
 			out.println("ERROR!");
@@ -235,25 +293,28 @@ public class Teams {
 	void load() {
 		try {
 			FileReader teamReader1 = new FileReader("teams.txt");
+			FileReader scoreReader1 = new FileReader("scores.txt");
+			FileReader gearReader1 = new FileReader("gears.txt");
+			FileReader numberMatches1 = new FileReader("numMat.txt");
+			FileReader scoAve1 = new FileReader("scoAve.txt");
+			FileReader gearAve1 = new FileReader("gearAve.txt");
+			
 			BufferedReader teamReader2 = new BufferedReader(teamReader1);
+			BufferedReader scoreReader2 = new BufferedReader(scoreReader1);
+			BufferedReader gearReader2 = new BufferedReader(gearReader1);
+			BufferedReader numberMatches2 = new BufferedReader(numberMatches1);
+			BufferedReader scoAve2 = new BufferedReader(scoAve1);
+			BufferedReader gearAve2 = new BufferedReader(gearAve1);
 			
 			for(int i = 0; i < teams.length; i++) {
 				teams[i] = Integer.parseInt(teamReader2.readLine());
-			}
-			//
-			FileReader scoreReader1 = new FileReader("scores.txt");
-			BufferedReader scoreReader2 = new BufferedReader(scoreReader1);
-			
-			for(int i = 0; i < scores.length; i++) {
 				scores[i] = Integer.parseInt(scoreReader2.readLine());
-			}
-			//
-			FileReader gearReader1 = new FileReader("gears.txt");
-			BufferedReader gearReader2 = new BufferedReader(gearReader1);
-			
-			for(int i = 0; i < gears.length; i++) {
 				gears[i] = Integer.parseInt(gearReader2.readLine());
+				numMat[i] = Integer.parseInt(numberMatches2.readLine());
+				scoAve[i] = Double.parseDouble(scoAve2.readLine());
+				gearAve[i] = Double.parseDouble(gearAve2.readLine());
 			}
+			
 		} catch(IOException ex) {
 			out.println("ERRROR!");
 		} catch(java.lang.NumberFormatException ex) {
