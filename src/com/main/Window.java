@@ -19,6 +19,7 @@ public class Window extends JFrame implements ActionListener {
 	JTextField teamNumField = new JTextField("");
 	JTextField teamScore = new JTextField("");
 	JTextField gearText = new JTextField("");
+	JTextField numRand = new JTextField("");
 	JButton clear = new JButton("Delete All Info");
 	JButton random = new JButton("Random values");
 	JButton blank = new JButton("I'm  i n v i s i b l e");
@@ -28,6 +29,8 @@ public class Window extends JFrame implements ActionListener {
 	JTextArea gearShower = new JTextArea("");
 	JTextArea scoAveShower = new JTextArea("");
 	JTextArea gearAveShower = new JTextArea("");
+	
+	JTextArea consol = new JTextArea("");
 	
 	JButton teams = new JButton("Team");
 	JButton scores = new JButton("Total points");
@@ -63,7 +66,12 @@ public class Window extends JFrame implements ActionListener {
 		clear.setBounds(5, 105, 120, 20);
 		clear.setBackground(Color.RED);
 		add(random);
-		random.setBounds(5, 130, 120, 20);
+		random.setBounds(5, 180, 120, 20);
+		add(numRand);
+		numRand.setBounds(5, 155, 120, 20);
+		add(consol);
+		consol.setBounds(5, 205, 120, 466);
+		consol.setBackground(Color.LIGHT_GRAY);
 		
 		add(teams);
 		teams.setBounds(130, 5, 120, 20);
@@ -165,7 +173,11 @@ public class Window extends JFrame implements ActionListener {
 		
 		if(e.getSource() == random) {
 			teamInfo.clear();
-			teamInfo.fillRandom();
+			try {
+				teamInfo.fillRandom(Integer.parseInt(numRand.getText()));
+			} catch(java.lang.NumberFormatException ex) {
+				teamInfo.fillRandom(teamInfo.teams.length);
+			}
 		}
 		
 		sort();
@@ -270,35 +282,30 @@ public class Window extends JFrame implements ActionListener {
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				random.setBackground(Color.green);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				random.setBackground(Color.cyan);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				random.setBackground(Color.orange);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				random.setBackground(Color.magenta);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

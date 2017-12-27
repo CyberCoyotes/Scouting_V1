@@ -12,12 +12,14 @@ import java.util.Random;
 
 public class Teams {
 	
-	int teams[] = new int[40];
-	int scores[] = new int[40];
-	int numMat[] = new int[40];
-	double scoAve[] = new double[40];
-	double gearAve[] = new double[40];
-	int gears[] = new int[40];
+	static int not = 40;
+	
+	int teams[] = new int[not];
+	int scores[] = new int[not];
+	int numMat[] = new int[not];
+	double scoAve[] = new double[not];
+	double gearAve[] = new double[not];
+	int gears[] = new int[not];
 	
 	public Teams() {
 		load();
@@ -44,7 +46,7 @@ public class Teams {
 			}
 		}
 		
-		if(found) {
+		if(found && (!(score < 0) || !(gear < 0))) {
 			int oldScore = scores[value];
 			int oldGear = gears[value];
 			scores[value] = oldScore + score;
@@ -211,7 +213,7 @@ public class Teams {
 	        	}
 	        }  
         }
-        String[] string = new String[200];
+        String[] string = new String[teams.length*5];
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
         		String s = teams[i] + "\n";
@@ -282,12 +284,12 @@ public class Teams {
 	}
 	
 	void clear() {
-		teams = new int[40];
-		scores = new int[40];
-		gears = new int[40];
-		numMat = new int[40];
-		scoAve = new double[40];
-		gearAve = new double[40];
+		teams = new int[not];
+		scores = new int[not];
+		gears = new int[not];
+		numMat = new int[not];
+		scoAve = new double[not];
+		gearAve = new double[not];
 	}
 	
 	@SuppressWarnings("resource")
@@ -324,21 +326,26 @@ public class Teams {
 		}
 	}
 	
-	void fillRandom() {
-		clear();
-		Random random = new Random();
-		for(int i = 0; i < teams.length; i ++) {
-			int randTeam = random.nextInt(6999) + 1;
-			for(int x = 0; x < teams.length; x++) {
-				while(randTeam == teams[x]) {
-					randTeam = random.nextInt(6999) + 1;
+	void fillRandom(int amount) {
+		if(amount > teams.length) {
+			@SuppressWarnings("unused")
+			Warning warning = new Warning("The maximum number is " + teams.length);
+		} else {
+			clear();
+			Random random = new Random();
+			for(int i = 0; i < amount; i++) {
+				int randTeam = random.nextInt(6999) + 1;
+				for(int x = 0; x < amount; x++) {
+					while(randTeam == teams[x]) {
+						randTeam = random.nextInt(6999) + 1;
+					}
 				}
-			}
-			updateTeam(randTeam, random.nextInt(200*12), random.nextInt(6*12));
-			if(teams[i] != 0) {
-				numMat[i] = random.nextInt(3) + 9;
-			} else {
-				numMat[i] = 0;
+				updateTeam(randTeam, random.nextInt(200*12), random.nextInt(6*12));
+				if(teams[i] != 0) {
+					numMat[i] = random.nextInt(3) + 9;
+				} else {
+					numMat[i] = 0;
+				}
 			}
 		}
 		doAverages();
