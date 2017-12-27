@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Random;
 
 public class Teams {
@@ -83,6 +85,7 @@ public class Teams {
 	}
 	
 	String[] sort(double[] by) {
+		DecimalFormat d = new DecimalFormat("#.00");
 		int n = by.length;  
         int temp = 0;
         int temp2 = 0;
@@ -116,17 +119,42 @@ public class Teams {
 		        }
 	        }  
         }
-        String[] string = new String[40];
+        String[] string = new String[200];
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
-        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i] + " average score " + scoAve[i] + " average gears " + gearAve[i];
-        		string[i] = s + "\n";
+        		String s = teams[i] + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length; i < by.length*2; i++) {
+        	if(teams[i - by.length] != 0) {
+        		String s = scores[i - (by.length)] + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length*2; i < by.length*3; i++) {
+        	if(teams[i - by.length*2] != 0) {
+        		String s = gears[i - (by.length*2)] + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length*3; i < by.length*4; i++) {
+        	if(teams[i - by.length*3] != 0) {
+        		String s = d.format(scoAve[i - (by.length * 3)]) + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length*4; i < by.length*5; i++) {
+        	if(teams[i - by.length*4] != 0) {
+        		String s = d.format(gearAve[i - (by.length * 4)]) + "\n";
+        		string[i] = s;
         	}
         }
         return string;
 	}
 	
 	String[] sort(int[] by) {
+		DecimalFormat d = new DecimalFormat("#.00");
 		int n = by.length;  
         int temp = 0;
         int temp2 = 0;
@@ -185,11 +213,35 @@ public class Teams {
 	        	}
 	        }  
         }
-        String[] string = new String[40];
+        String[] string = new String[200];
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
-        		String s = "Team " + teams[i] + " score " + scores[i] + " gears " + gears [i] + " average score " + scoAve[i] + " average gears " + gearAve[i];
-        		string[i] = s + "\n";
+        		String s = teams[i] + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length; i < by.length*2; i++) {
+        	if(teams[i - by.length] != 0) {
+        		String s = scores[i - (by.length)] + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length*2; i < by.length*3; i++) {
+        	if(teams[i - by.length*2] != 0) {
+        		String s = gears[i - (by.length*2)] + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length*3; i < by.length*4; i++) {
+        	if(teams[i - by.length*3] != 0) {
+        		String s = d.format(scoAve[i - (by.length * 3)]) + "\n";
+        		string[i] = s;
+        	}
+        }
+        for(int i = by.length*4; i < by.length*5; i++) {
+        	if(teams[i - by.length*4] != 0) {
+        		String s = d.format(gearAve[i - (by.length * 4)]) + "\n";
+        		string[i] = s;
         	}
         }
         return string;
@@ -279,7 +331,9 @@ public class Teams {
 	void fillRandom() {
 		Random random = new Random();
 		for(int i = 0; i < teams.length; i ++) {
-			updateTeam(random.nextInt(7000), random.nextInt(200), random.nextInt(8));
+			updateTeam(random.nextInt(7000), random.nextInt(200*12), random.nextInt(6*12));
+			numMat[i] = random.nextInt(3) + 9; 
 		}
+		doAverages();
 	}
 }
