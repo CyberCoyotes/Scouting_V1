@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Random;
 
 public class Teams {
@@ -19,7 +18,6 @@ public class Teams {
 	double scoAve[] = new double[40];
 	double gearAve[] = new double[40];
 	int gears[] = new int[40];
-	int amount;
 	
 	public Teams() {
 		load();
@@ -284,14 +282,12 @@ public class Teams {
 	}
 	
 	void clear() {
-		for(int i = 0; i < teams.length; i++) {
-			teams[i] = 0;
-			scores[i] = 0;
-			gears[i] = 0;
-			numMat[i] = 0;
-			scoAve[i] = 0;
-			gearAve[i] = 0;
-		}
+		teams = new int[40];
+		scores = new int[40];
+		gears = new int[40];
+		numMat = new int[40];
+		scoAve = new double[40];
+		gearAve = new double[40];
 	}
 	
 	@SuppressWarnings("resource")
@@ -329,10 +325,21 @@ public class Teams {
 	}
 	
 	void fillRandom() {
+		clear();
 		Random random = new Random();
 		for(int i = 0; i < teams.length; i ++) {
-			updateTeam(random.nextInt(7000), random.nextInt(200*12), random.nextInt(6*12));
-			numMat[i] = random.nextInt(3) + 9; 
+			int randTeam = random.nextInt(6999) + 1;
+			for(int x = 0; x < teams.length; x++) {
+				while(randTeam == teams[x]) {
+					randTeam = random.nextInt(6999) + 1;
+				}
+			}
+			updateTeam(randTeam, random.nextInt(200*12), random.nextInt(6*12));
+			if(teams[i] != 0) {
+				numMat[i] = random.nextInt(3) + 9;
+			} else {
+				numMat[i] = 0;
+			}
 		}
 		doAverages();
 	}

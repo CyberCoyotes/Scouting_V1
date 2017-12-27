@@ -11,7 +11,7 @@ import java.awt.geom.RoundRectangle2D;
 public class Scouting_V1 {
 
 	public static void main(String[] args) {
-		Window window = new Window(900, 715);
+		Window window = new Window(772, 714);
 		//window.setLocation(400, 225);
 		//window.setUndecorated(true);
 		window.setVisible(true);

@@ -5,11 +5,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -26,24 +23,17 @@ public class Window extends JFrame implements ActionListener {
 	JButton random = new JButton("Random values");
 	JButton blank = new JButton("I'm  i n v i s i b l e");
 	
-	JRadioButton scoreSort = new JRadioButton("Sort By Score");
-	JRadioButton gearSort = new JRadioButton("Sort By Gears");
-	JRadioButton teamSort = new JRadioButton("Sort By Team");
-	JRadioButton scoAveSort = new JRadioButton("Sort by Ave Score");
-	JRadioButton gearAveSort = new JRadioButton("Sort by Ave Gear");
-	ButtonGroup sortBy = new ButtonGroup();
-	
 	JTextArea teamShower = new JTextArea("");
 	JTextArea scoShower = new JTextArea("");
 	JTextArea gearShower = new JTextArea("");
 	JTextArea scoAveShower = new JTextArea("");
 	JTextArea gearAveShower = new JTextArea("");
 	
-	JLabel teams = new JLabel("Team");
-	JLabel scores = new JLabel("Total points");
-	JLabel gears = new JLabel("Total gears");
-	JLabel scoAve = new JLabel("Average score");
-	JLabel gearAve = new JLabel("Average gears");
+	JButton teams = new JButton("Team");
+	JButton scores = new JButton("Total points");
+	JButton gears = new JButton("Total gears");
+	JButton scoAve = new JButton("Average score");
+	JButton gearAve = new JButton("Average gears");
 	
 	int sortSelection = 1;
 	
@@ -51,7 +41,14 @@ public class Window extends JFrame implements ActionListener {
 		super("3603 FRC Scouting");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png")));
 		this.setSize(x, y);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				teamInfo.save();
+				System.exit(0);
+			}
+		});
 		
 		add(teamNumField);
 		teamNumField.setBounds(5, 5, 120, 20);
@@ -69,67 +66,56 @@ public class Window extends JFrame implements ActionListener {
 		random.setBounds(5, 130, 120, 20);
 		
 		add(teams);
-		teams.setBounds(255, 5, 120, 20);
+		teams.setBounds(130, 5, 120, 20);
+		teams.setBackground(Color.YELLOW);
+		teams.setForeground(Color.BLACK);
 		add(scores);
-		scores.setBounds(380, 5, 120, 20);
+		scores.setBounds(255, 5, 120, 20);
+		scores.setBackground(Color.BLUE);
+		scores.setForeground(Color.WHITE);
 		add(gears);
-		gears.setBounds(505, 5, 120, 20);
+		gears.setBounds(380, 5, 120, 20);
+		gears.setBackground(Color.BLUE);
+		gears.setForeground(Color.WHITE);
 		add(scoAve);
-		scoAve.setBounds(630, 5, 120, 20);
+		scoAve.setBounds(505, 5, 120, 20);
+		scoAve.setBackground(Color.BLUE);
+		scoAve.setForeground(Color.WHITE);
 		add(gearAve);
-		gearAve.setBounds(755, 5, 120, 20);
+		gearAve.setBounds(630, 5, 120, 20);
+		gearAve.setBackground(Color.BLUE);
+		gearAve.setForeground(Color.WHITE);
 		
 		add(teamShower);
-		teamShower.setBounds(255, 30, 120, 640);
+		teamShower.setBounds(130, 30, 120, 640);
 		teamShower.setBackground(Color.LIGHT_GRAY);
 		teamShower.setEditable(false);
 		add(scoShower);
-		scoShower.setBounds(380, 30, 120, 640);
+		scoShower.setBounds(255, 30, 120, 640);
 		scoShower.setBackground(Color.LIGHT_GRAY);
 		scoShower.setEditable(false);
 		add(gearShower);
-		gearShower.setBounds(505, 30, 120, 640);
+		gearShower.setBounds(380, 30, 120, 640);
 		gearShower.setBackground(Color.LIGHT_GRAY);
 		gearShower.setEditable(false);
 		add(scoAveShower);
-		scoAveShower.setBounds(630, 30, 120, 640);
+		scoAveShower.setBounds(505, 30, 120, 640);
 		scoAveShower.setBackground(Color.LIGHT_GRAY);
 		scoAveShower.setEditable(false);
 		add(gearAveShower);
-		gearAveShower.setBounds(755, 30, 120, 640);
+		gearAveShower.setBounds(630, 30, 120, 640);
 		gearAveShower.setBackground(Color.LIGHT_GRAY);
 		gearAveShower.setEditable(false);
 		
-		
-		add(teamSort);
-		teamSort.setBounds(130, 5, 120, 20);
-		teamSort.setSelected(true);
-		add(scoreSort);
-		scoreSort.setBounds(130, 30, 120, 20);
-		add(gearSort);
-		gearSort.setBounds(130, 55, 120, 20);
-		add(scoAveSort);
-		scoAveSort.setBounds(130, 80, 120, 20);
-		add(gearAveSort);
-		gearAveSort.setBounds(130, 105, 120, 20);
-		
-		
+		teams.addActionListener(this);
+		scores.addActionListener(this);
+		gears.addActionListener(this);
+		scoAve.addActionListener(this);
+		gearAve.addActionListener(this);
 		
 		submitButton.addActionListener(this);
 		clear.addActionListener(this);
 		random.addActionListener(this);
-		gearSort.addActionListener(this);
-		scoreSort.addActionListener(this);
-		teamSort.addActionListener(this);
-		scoAveSort.addActionListener(this);
-		gearAveSort.addActionListener(this);
-		
-		
-		sortBy.add(gearSort);
-		sortBy.add(scoreSort);
-		sortBy.add(teamSort);
-		sortBy.add(scoAveSort);
-		sortBy.add(gearAveSort);
 		
 		add(blank);
 		blank.setVisible(false);
@@ -161,19 +147,19 @@ public class Window extends JFrame implements ActionListener {
 			teamInfo.clear();
 		}
 		
-		if(e.getSource() == teamSort) {
+		if(e.getSource() == teams) {
 			sortSelection = 1;
 		}
-		if(e.getSource() == scoreSort) {
+		if(e.getSource() == scores) {
 			sortSelection = 2;
 		}
-		if(e.getSource() == gearSort) {
+		if(e.getSource() == gears) {
 			sortSelection = 3;
 		}
-		if(e.getSource() == scoAveSort) {
+		if(e.getSource() == scoAve) {
 			sortSelection = 4;
 		}
-		if(e.getSource() == gearAveSort) {
+		if(e.getSource() == gearAve) {
 			sortSelection = 5;
 		}
 		
@@ -188,24 +174,46 @@ public class Window extends JFrame implements ActionListener {
 	
 	void sort() {
 		String[] string;
+		
+		teams.setBackground(Color.BLUE);
+		teams.setForeground(Color.WHITE);
+		scores.setBackground(Color.BLUE);
+		scores.setForeground(Color.WHITE);
+		gears.setBackground(Color.BLUE);
+		gears.setForeground(Color.WHITE);
+		scoAve.setBackground(Color.BLUE);
+		scoAve.setForeground(Color.WHITE);
+		gearAve.setBackground(Color.BLUE);
+		gearAve.setForeground(Color.WHITE);
+		
 		switch(sortSelection) {
 		case 1:
+			teams.setBackground(Color.YELLOW);
+			teams.setForeground(Color.BLACK);
 			string = teamInfo.sort(teamInfo.teams);
 			displayData(string);
 			break;
 		case 2:
+			scores.setBackground(Color.YELLOW);
+			scores.setForeground(Color.BLACK);
 			string = teamInfo.sort(teamInfo.scores);
 			displayData(string);
 			break;
 		case 3:
+			gears.setBackground(Color.YELLOW);
+			gears.setForeground(Color.BLACK);
 			string = teamInfo.sort(teamInfo.gears);
 			displayData(string);
 			break;
 		case 4:
+			scoAve.setBackground(Color.YELLOW);
+			scoAve.setForeground(Color.BLACK);
 			string = teamInfo.sort(teamInfo.scoAve);
 			displayData(string);
 			break;
 		case 5:
+			gearAve.setBackground(Color.YELLOW);
+			gearAve.setForeground(Color.BLACK);
 			string = teamInfo.sort(teamInfo.gearAve);
 			displayData(string);
 			break;
