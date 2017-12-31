@@ -14,6 +14,7 @@ public class Teams {
 	
 	int highestPossibleTeamNumber = 6999;
 	int not = 40; //Number of teams
+	int NOATAD = 6; //Number of arrays that are displayed
 	
 	int teams[] = new int[not]; //Array to store team numbers
 	int scores[] = new int[not]; //Array to store scores
@@ -23,6 +24,8 @@ public class Teams {
 	int climbs[] = new int[not]; //Array to store total number of climb points
 	double climbAve[] = new double[not]; //Array to store average number of climb points
 	int gears[] = new int[not]; //Array to store total number of gears
+	
+	DecimalFormat d = new DecimalFormat("#.00");
 	
 	public Teams() {
 		load(); //Reload any saved data
@@ -90,7 +93,6 @@ public class Teams {
 	}
 	
 	String[] sort(double[] by) {//Method to sort by an average. "by" is short for sort by
-		DecimalFormat d = new DecimalFormat("#.00");//Format decimal numbers to only have 2 decimal places
 		int n = by.length;  //Save the length of the requested array
         int temp = 0; //Temporary score
         int temp2 = 0; //Temporary team
@@ -136,48 +138,24 @@ public class Teams {
         }
         
         //Build a string that has all of the sorted data in it. This is used by the score showers.
-        String[] string = new String[teams.length*6];
+        String[] string = new String[NOATAD];
+        for(int i = 0; i < string.length; i++) {
+        	string[i] = "";
+        }
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
-        		String s = teams[i] + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length; i < by.length*2; i++) {
-        	if(teams[i - by.length] != 0) {
-        		String s = scores[i - (by.length)] + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*2; i < by.length*3; i++) {
-        	if(teams[i - by.length*2] != 0) {
-        		String s = gears[i - (by.length*2)] + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*3; i < by.length*4; i++) {
-        	if(teams[i - by.length*3] != 0) {
-        		String s = d.format(scoAve[i - (by.length * 3)]) + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*4; i < by.length*5; i++) {
-        	if(teams[i - by.length*4] != 0) {
-        		String s = d.format(gearAve[i - (by.length * 4)]) + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*5; i < by.length*6; i++) {
-        	if(teams[i - by.length*5] != 0) {
-        		String s = d.format(climbAve[i - (by.length * 5)]) + "\n";
-        		string[i] = s;
+        		string[0] = string[0] + teams[i] + "\n";
+        		string[1] = string[1] + scores[i] + "\n";
+        		string[2] = string[2] + gears[i] + "\n";
+        		string[3] = string[3] + d.format(scoAve[i]) + "\n";
+        		string[4] = string[4] + d.format(gearAve[i]) + "\n";
+        		string[5] = string[5] + d.format(climbAve[i]) + "\n";
         	}
         }
         return string;
 	}
 	
 	String[] sort(int[] by) {//Same as the other score but uses the integer type
-		DecimalFormat d = new DecimalFormat("#.00");
 		int n = by.length;  
         int temp = 0;
         int temp2 = 0;
@@ -250,41 +228,18 @@ public class Teams {
 	        	}
 	        }  
         }
-        String[] string = new String[teams.length*6];
+        String[] string = new String[NOATAD];
+        for(int i = 0; i < string.length; i++) {
+        	string[i] = "";
+        }
         for(int i = 0; i < n; i++) {
         	if(teams[i] != 0) {
-        		String s = teams[i] + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length; i < by.length*2; i++) {
-        	if(teams[i - by.length] != 0) {
-        		String s = scores[i - (by.length)] + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*2; i < by.length*3; i++) {
-        	if(teams[i - by.length*2] != 0) {
-        		String s = gears[i - (by.length*2)] + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*3; i < by.length*4; i++) {
-        	if(teams[i - by.length*3] != 0) {
-        		String s = d.format(scoAve[i - (by.length * 3)]) + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*4; i < by.length*5; i++) {
-        	if(teams[i - by.length*4] != 0) {
-        		String s = d.format(gearAve[i - (by.length * 4)]) + "\n";
-        		string[i] = s;
-        	}
-        }
-        for(int i = by.length*5; i < by.length*6; i++) {
-        	if(teams[i - by.length*5] != 0) {
-        		String s = d.format(climbAve[i - (by.length * 5)]) + "\n";
-        		string[i] = s;
+        		string[0] = string[0] + teams[i] + "\n";
+        		string[1] = string[1] + scores[i] + "\n";
+        		string[2] = string[2] + gears[i] + "\n";
+        		string[3] = string[3] + d.format(scoAve[i]) + "\n";
+        		string[4] = string[4] + d.format(gearAve[i]) + "\n";
+        		string[5] = string[5] + d.format(climbAve[i]) + "\n";
         	}
         }
         return string;
@@ -410,7 +365,7 @@ public class Teams {
 				times = 1;
 				matches = random.nextInt(3)+10;
 				for(int j = 0; j < matches; j++) {
-					updateTeam(randTeam, random.nextInt(200), random.nextInt(7), random.nextInt(5)+1);
+					updateTeam(randTeam, random.nextInt(200), random.nextInt(8), random.nextInt(5)+1);
 				}
 			}
 		}

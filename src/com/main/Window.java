@@ -1,6 +1,7 @@
 package com.main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,6 +55,9 @@ public class Window extends JFrame implements ActionListener {
 				System.exit(0);
 			}
 		});
+		
+		Font font = new Font(Font.SERIF, Font.PLAIN, 13);
+		random.setFont(font);
 		
 		add(teamNumField);
 		teamNumField.setBounds(5, 5, 120, 20);
@@ -149,23 +153,27 @@ public class Window extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submitButton) {
-			String team = teamNumField.getText();
-			String score = teamScore.getText();
-			String gears = gearText.getText();
-			String climbRank = climbRankText.getText();
-			if(Integer.parseInt(climbRank) < 1 || Integer.parseInt(climbRank) > 5) {
+			int team = 0, score = 0, gears = 0, climbRank = 0;
+			try {
+				team = Integer.parseInt(teamNumField.getText());
+				score = Integer.parseInt(teamScore.getText());
+				gears = Integer.parseInt(gearText.getText());
+				climbRank = Integer.parseInt(climbRankText.getText());
+			} catch(java.lang.NumberFormatException ex) {
+				Warning warning = new Warning("You MUST enter numeric values");
+				return;
+			}
+			
+			if(climbRank < 1 || climbRank > 5) {
 				Warning warning = new Warning("Climbing rank must be between 1 and 5.");
 			} else {
-				try {
-					teamInfo.updateTeam(Integer.parseInt(team), Integer.parseInt(score), Integer.parseInt(gears), Integer.parseInt(climbRank));
-				} catch(java.lang.NumberFormatException ex) {
-					Warning warning = new Warning("You MUST enter numeric values");
-				}
+				teamInfo.updateTeam(team, score, gears, climbRank);
 				teamNumField.setText("");
 				teamScore.setText("");
 				gearText.setText("");
 				climbRankText.setText("");
 			}
+			
 		}
 		if(e.getSource() == clear) {
 			teamInfo.clear();
@@ -189,7 +197,6 @@ public class Window extends JFrame implements ActionListener {
 		if(e.getSource() == climbAve) {
 			sortSelection = 6;
 		}
-		
 		if(e.getSource() == random) {
 			teamInfo.clear();
 			try {
@@ -260,103 +267,25 @@ public class Window extends JFrame implements ActionListener {
 	}
 	
 	void displayData(String[] string) {
-		int x = teamInfo.teams.length;
-		String bigString = "";
-		for(int i = 0; i < x; i++) {
-			if(string[i] != null) {
-				bigString = bigString + string[i];
-			}
-		}
-		teamShower.setText(bigString);
+		teamShower.setText(string[0]);
+		scoShower.setText(string[1]);
+		gearShower.setText(string[2]);
+		scoAveShower.setText(string[3]);
+		gearAveShower.setText(string[4]);
+		climbAveShower.setText(string[5]);
 		
-		bigString = "";
-		for(int i = x; i < x*2; i++) {
-			if(string[i] != null) {
-				bigString = bigString + string[i];
-			}
-		}
-		scoShower.setText(bigString);
-		
-		bigString = "";
-		for(int i = x*2; i < x*3; i++) {
-			if(string[i] != null) {
-				bigString = bigString + string[i];
-			}
-		}
-		gearShower.setText(bigString);
-		
-		bigString = "";
-		for(int i = x*3; i < x*4; i++) {
-			if(string[i] != null) {
-				bigString = bigString + string[i];
-			}
-		}
-		scoAveShower.setText(bigString);
-		
-		bigString = "";
-		for(int i = x*4; i < x*5; i++) {
-			if(string[i] != null) {
-				bigString = bigString + string[i];
-			}
-		}
-		gearAveShower.setText(bigString);
-		
-		bigString = "";
-		for(int i = x*5; i < x*6; i++) {
-			if(string[i] != null) {
-				bigString = bigString + string[i];
-			}
-		}
-		climbAveShower.setText(bigString);
 	}
 	
 	private void randomColors() {
 		Thread thread = new Thread(() -> {
-			int prev = -1;
 			while(true) {
 				Random randomy = new Random();
-				int rand;
-				do {
-					rand = randomy.nextInt(10);
-				} while(rand==prev);
-				prev = rand;
-				
-				switch(rand) {
-				case 0:
-					random.setBackground(Color.RED);
-					break;
-				case 1:
-					random.setBackground(Color.ORANGE);
-					break;
-				case 2:
-					random.setBackground(Color.YELLOW);
-					break;
-				case 3:
-					random.setBackground(Color.GREEN);
-					break;
-				case 4:
-					random.setBackground(Color.BLUE);
-					break;
-				case 5:
-					random.setBackground(Color.MAGENTA);
-					break;
-				case 6:
-					random.setBackground(Color.PINK);
-					break;
-				case 7:
-					random.setBackground(Color.CYAN);
-					break;
-				case 8:
-					random.setBackground(Color.LIGHT_GRAY);
-					break;
-				case 9:
-					random.setBackground(Color.GRAY);
-					break;
-				}
+				Color myColor = new Color(randomy.nextInt(255), randomy.nextInt(255), randomy.nextInt(255));
+				random.setBackground(myColor);
+				random.setForeground(myColor.getBlue() < 100 && myColor.getGreen() < 100 && myColor.getRed() < 100 ? Color.WHITE : Color.BLACK);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
