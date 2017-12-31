@@ -11,12 +11,12 @@ import java.awt.geom.RoundRectangle2D;
 public class Scouting_V1 {
 
 	public static void main(String[] args) {
-		Window window = new Window(772, 714);
+		Window window = new Window(897, 714);
 		//window.setLocation(400, 225);
 		//window.setUndecorated(true);
 		window.setVisible(true);
 		Random random = new Random();
-		int sides = 102;
+		int sides = 30;
 		int x[] = new int[sides];
 		int y[] = new int[sides];
 		Thread thread = new Thread(() -> {
@@ -28,7 +28,7 @@ public class Scouting_V1 {
 				Polygon polygon = new Polygon(x, y, sides);
 				window.setShape(polygon);
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

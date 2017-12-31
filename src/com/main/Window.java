@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +20,7 @@ public class Window extends JFrame implements ActionListener {
 	JTextField teamNumField = new JTextField("");
 	JTextField teamScore = new JTextField("");
 	JTextField gearText = new JTextField("");
+	JTextField climbRankText = new JTextField("");
 	JTextField numRand = new JTextField("");
 	JButton clear = new JButton("Delete All Info");
 	JButton random = new JButton("Random values");
@@ -29,14 +31,14 @@ public class Window extends JFrame implements ActionListener {
 	JTextArea gearShower = new JTextArea("");
 	JTextArea scoAveShower = new JTextArea("");
 	JTextArea gearAveShower = new JTextArea("");
-	
-	JTextArea consol = new JTextArea("");
+	JTextArea climbAveShower = new JTextArea("");
 	
 	JButton teams = new JButton("Team");
 	JButton scores = new JButton("Total points");
 	JButton gears = new JButton("Total gears");
 	JButton scoAve = new JButton("Average score");
 	JButton gearAve = new JButton("Average gears");
+	JButton climbAve = new JButton("Average climb");
 	
 	int sortSelection = 1;
 	
@@ -59,19 +61,18 @@ public class Window extends JFrame implements ActionListener {
 		gearText.setBounds(5, 55, 120, 20);
 		add(teamScore);
 		teamScore.setBounds(5, 30, 120, 20);
+		add(climbRankText);
+		climbRankText.setBounds(5, 80, 120, 20);
 		add(submitButton);
-		submitButton.setBounds(5, 80, 120, 20);
+		submitButton.setBounds(5, 105, 120, 20);
 		submitButton.setBackground(Color.GREEN);
 		add(clear);
-		clear.setBounds(5, 105, 120, 20);
+		clear.setBounds(5, 130, 120, 20);
 		clear.setBackground(Color.RED);
 		add(random);
-		random.setBounds(5, 180, 120, 20);
+		random.setBounds(5, 205, 120, 20);
 		add(numRand);
-		numRand.setBounds(5, 155, 120, 20);
-		add(consol);
-		consol.setBounds(5, 205, 120, 466);
-		consol.setBackground(Color.LIGHT_GRAY);
+		numRand.setBounds(5, 180, 120, 20);
 		
 		add(teams);
 		teams.setBounds(130, 5, 120, 20);
@@ -93,6 +94,10 @@ public class Window extends JFrame implements ActionListener {
 		gearAve.setBounds(630, 5, 120, 20);
 		gearAve.setBackground(Color.BLUE);
 		gearAve.setForeground(Color.WHITE);
+		add(climbAve);
+		climbAve.setBounds(755, 5, 120, 20);
+		climbAve.setBackground(Color.BLUE);
+		climbAve.setForeground(Color.WHITE);
 		
 		add(teamShower);
 		teamShower.setBounds(130, 30, 120, 640);
@@ -114,12 +119,17 @@ public class Window extends JFrame implements ActionListener {
 		gearAveShower.setBounds(630, 30, 120, 640);
 		gearAveShower.setBackground(Color.LIGHT_GRAY);
 		gearAveShower.setEditable(false);
+		add(climbAveShower);
+		climbAveShower.setBounds(755, 30, 120, 640);
+		climbAveShower.setBackground(Color.LIGHT_GRAY);
+		climbAveShower.setEditable(false);
 		
 		teams.addActionListener(this);
 		scores.addActionListener(this);
 		gears.addActionListener(this);
 		scoAve.addActionListener(this);
 		gearAve.addActionListener(this);
+		climbAve.addActionListener(this);
 		
 		submitButton.addActionListener(this);
 		clear.addActionListener(this);
@@ -142,14 +152,20 @@ public class Window extends JFrame implements ActionListener {
 			String team = teamNumField.getText();
 			String score = teamScore.getText();
 			String gears = gearText.getText();
-			try {
-				teamInfo.updateTeam(Integer.parseInt(team), Integer.parseInt(score), Integer.parseInt(gears));
-			} catch(java.lang.NumberFormatException ex) {
-				Warning warning = new Warning("You MUST enter numeric values");
+			String climbRank = climbRankText.getText();
+			if(Integer.parseInt(climbRank) < 1 || Integer.parseInt(climbRank) > 5) {
+				Warning warning = new Warning("Climbing rank must be between 1 and 5.");
+			} else {
+				try {
+					teamInfo.updateTeam(Integer.parseInt(team), Integer.parseInt(score), Integer.parseInt(gears), Integer.parseInt(climbRank));
+				} catch(java.lang.NumberFormatException ex) {
+					Warning warning = new Warning("You MUST enter numeric values");
+				}
+				teamNumField.setText("");
+				teamScore.setText("");
+				gearText.setText("");
+				climbRankText.setText("");
 			}
-			teamNumField.setText("");
-			teamScore.setText("");
-			gearText.setText("");
 		}
 		if(e.getSource() == clear) {
 			teamInfo.clear();
@@ -169,6 +185,9 @@ public class Window extends JFrame implements ActionListener {
 		}
 		if(e.getSource() == gearAve) {
 			sortSelection = 5;
+		}
+		if(e.getSource() == climbAve) {
+			sortSelection = 6;
 		}
 		
 		if(e.getSource() == random) {
@@ -197,6 +216,8 @@ public class Window extends JFrame implements ActionListener {
 		scoAve.setForeground(Color.WHITE);
 		gearAve.setBackground(Color.BLUE);
 		gearAve.setForeground(Color.WHITE);
+		climbAve.setBackground(Color.BLUE);
+		climbAve.setForeground(Color.WHITE);
 		
 		switch(sortSelection) {
 		case 1:
@@ -227,6 +248,12 @@ public class Window extends JFrame implements ActionListener {
 			gearAve.setBackground(Color.YELLOW);
 			gearAve.setForeground(Color.BLACK);
 			string = teamInfo.sort(teamInfo.gearAve);
+			displayData(string);
+			break;
+		case 6:
+			climbAve.setBackground(Color.YELLOW);
+			climbAve.setForeground(Color.BLACK);
+			string = teamInfo.sort(teamInfo.climbAve);
 			displayData(string);
 			break;
 		}
@@ -273,39 +300,63 @@ public class Window extends JFrame implements ActionListener {
 			}
 		}
 		gearAveShower.setText(bigString);
+		
+		bigString = "";
+		for(int i = x*5; i < x*6; i++) {
+			if(string[i] != null) {
+				bigString = bigString + string[i];
+			}
+		}
+		climbAveShower.setText(bigString);
 	}
 	
 	private void randomColors() {
 		Thread thread = new Thread(() -> {
+			int prev = -1;
 			while(true) {
-				random.setBackground(Color.red);
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				Random randomy = new Random();
+				int rand;
+				do {
+					rand = randomy.nextInt(10);
+				} while(rand==prev);
+				prev = rand;
+				
+				switch(rand) {
+				case 0:
+					random.setBackground(Color.RED);
+					break;
+				case 1:
+					random.setBackground(Color.ORANGE);
+					break;
+				case 2:
+					random.setBackground(Color.YELLOW);
+					break;
+				case 3:
+					random.setBackground(Color.GREEN);
+					break;
+				case 4:
+					random.setBackground(Color.BLUE);
+					break;
+				case 5:
+					random.setBackground(Color.MAGENTA);
+					break;
+				case 6:
+					random.setBackground(Color.PINK);
+					break;
+				case 7:
+					random.setBackground(Color.CYAN);
+					break;
+				case 8:
+					random.setBackground(Color.LIGHT_GRAY);
+					break;
+				case 9:
+					random.setBackground(Color.GRAY);
+					break;
 				}
-				random.setBackground(Color.green);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				random.setBackground(Color.cyan);
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				random.setBackground(Color.orange);
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				random.setBackground(Color.magenta);
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
