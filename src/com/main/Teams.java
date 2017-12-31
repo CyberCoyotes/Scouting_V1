@@ -341,6 +341,8 @@ public class Teams {
 		numMat = new int[not];
 		scoAve = new double[not];
 		gearAve = new double[not];
+		climbs = new int[not];
+		climbAve = new double[not];
 	}
 	
 	@SuppressWarnings("resource")
