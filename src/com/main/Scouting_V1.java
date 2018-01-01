@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 public class Scouting_V1 {
 
 	public static void main(String[] args) {
-		Window window = new Window(897, 714);
+		Window window = new Window(897, 759);
 		window.setLocation(0, 8);
 		//window.setUndecorated(true);
 		window.setVisible(true);

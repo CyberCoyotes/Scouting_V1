@@ -25,70 +25,24 @@ public class Teams {
 	double climbAve[] = new double[not]; //Array to store average number of climb points
 	int gears[] = new int[not]; //Array to store total number of gears
 	
+	boolean embolden = false;
+	int teamNum = 0;
+	
+	String h = "<b><span style=\"background-color: #FFFF00\">";
+	String endH = "</span></b><br>";
+	
 	DecimalFormat d = new DecimalFormat("#.00");
 	
 	public Teams() {
 		load(); //Reload any saved data
 	}
 	
-	void doAverages() { //Method to calculate averages
-		for(int i = 0; i < teams.length; i++) {
-			if(numMat[i] != 0) { //To keep from dividing by zero
-				scoAve[i] = (double) scores[i] / numMat[i]; //Calculate score averages
-				gearAve[i] = (double) gears[i] / numMat[i]; //Calculate gear averages
-				climbAve[i] = (double) climbs[i] / numMat[i]; //Calculate climb averages
-			}
-		}
-	}
-	
-	void updateTeam(int teamNumber, int score, int gear, int climb) { //Method to update team info after a match
-		
-		int value = 0;//Used to find the position of the requested team number in the team array
-		boolean found = false; //Boolean to state if the team number was found in the array or not
-		
-		for(int i = 0; i < teams.length; i++) { //Cycle through all of the positions
-			if(teams[i] == teamNumber && !found) { //If it found a match...
-				value = i; //Store the position into value
-				found = true; //Flag that the number has been found
-			}
-		}
-		
-		if(found) { //If the team already exists...
-			scores[value] = scores[value] + score;//Add the new score to their total
-			gears[value] = gears[value] + gear; //Add the new gears to their total
-			climbs[value] = climbs[value] + climb; //Add the new climb rank to their total
-			numMat[value]++; //Increase the number of matches they've played in
-		} else { //If the team doesn't already exist...
-			addTeam(teamNumber, score, gear, climb); //Add a new team with the requested information
-		}
-		doAverages(); //Calculate the new averages
-	}
-	
-	void addTeam(int teamNumber, int score, int gear, int climb) { //Method for adding a team
-		try {//Try to locate an empty slot. Empty is defined by the team value being 0
-			int value = 0; //Used to save the position in the array
-			boolean emptySlot = false; //Boolean to state if there is an empty slot or not
-			for(int i = 0; i < teams.length; i++) {
-				if(teams[i] == 0 && !emptySlot) {//If it found an empty slot...
-					value = i;//Store the position into value
-					emptySlot = true; //Flag that there is a slot
-				}
-			}
-			
-			if(emptySlot) {//If a slot has been found...
-				teams[value] = teamNumber;//Save the team number
-				scores[value] = score;//Save the score
-				gears[value] = gear;//Save the number of gears
-				climbs[value] = climb;//Save the climb rank
-				numMat[value] = 1;//Set their number of matches to 1
-			} else {//If there isn't an empty slot...
-				@SuppressWarnings("unused")
-				//Warn that there are no slots left
-				Warning warning = new Warning("Too many teams. The maximum number of teams is " + teams.length);
-			}
-			
-		} catch (java.lang.ArrayIndexOutOfBoundsException ex) {
-			ex.printStackTrace();
+	void bold(boolean b, int teamNumber) {
+		embolden = b;
+		if(embolden) {
+			teamNum = teamNumber;
+		} else {
+			teamNum = 0;
 		}
 	}
 	
@@ -136,21 +90,35 @@ public class Teams {
 		        }
 	        }  
         }
-        
-        //Build a string that has all of the sorted data in it. This is used by the score showers.
-        String[] string = new String[NOATAD];
+        return formatedInfo();
+	}
+	
+	String[] formatedInfo() {
+		String[] string = new String[NOATAD];
         for(int i = 0; i < string.length; i++) {
-        	string[i] = "";
+        	string[i] = "<font face=\"Arial\">";
         }
-        for(int i = 0; i < n; i++) {
+        for(int i = 0; i < teams.length; i++) {
         	if(teams[i] != 0) {
-        		string[0] = string[0] + teams[i] + "\n";
-        		string[1] = string[1] + scores[i] + "\n";
-        		string[2] = string[2] + gears[i] + "\n";
-        		string[3] = string[3] + d.format(scoAve[i]) + "\n";
-        		string[4] = string[4] + d.format(gearAve[i]) + "\n";
-        		string[5] = string[5] + d.format(climbAve[i]) + "\n";
+        		if(embolden && teams[i] == teamNum) {
+    				string[0] = string[0] + h + teams[i] + endH;
+	        		string[1] = string[1] + h + scores[i] + endH;
+	        		string[2] = string[2] + h + gears[i] + endH;
+	        		string[3] = string[3] + h + d.format(scoAve[i]) + endH;
+	        		string[4] = string[4] + h + d.format(gearAve[i]) + endH;
+	        		string[5] = string[5] + h + d.format(climbAve[i]) + endH;
+        		} else {
+        			string[0] = string[0] + teams[i] + "<br>";
+	        		string[1] = string[1] + scores[i] + "<br>";
+	        		string[2] = string[2] + gears[i] + "<br>";
+	        		string[3] = string[3] + d.format(scoAve[i]) + "<br>";
+	        		string[4] = string[4] + d.format(gearAve[i]) + "<br>";
+	        		string[5] = string[5] + d.format(climbAve[i]) + "<br>";
+        		}
         	}
+        }
+        for(int i = 0; i < string.length; i++) {
+        	string[i] = string[i] + "</font face=\"Arial\"";
         }
         return string;
 	}
@@ -228,21 +196,8 @@ public class Teams {
 	        	}
 	        }  
         }
-        String[] string = new String[NOATAD];
-        for(int i = 0; i < string.length; i++) {
-        	string[i] = "";
-        }
-        for(int i = 0; i < n; i++) {
-        	if(teams[i] != 0) {
-        		string[0] = string[0] + teams[i] + "\n";
-        		string[1] = string[1] + scores[i] + "\n";
-        		string[2] = string[2] + gears[i] + "\n";
-        		string[3] = string[3] + d.format(scoAve[i]) + "\n";
-        		string[4] = string[4] + d.format(gearAve[i]) + "\n";
-        		string[5] = string[5] + d.format(climbAve[i]) + "\n";
-        	}
-        }
-        return string;
+        
+        return formatedInfo();
 	}
 	
 	void save() {//Method for saving the information to numerous text files
@@ -340,6 +295,57 @@ public class Teams {
 		}
 	}
 	
+	void updateTeam(int teamNumber, int score, int gear, int climb) { //Method to update team info after a match
+		
+		int value = 0;//Used to find the position of the requested team number in the team array
+		boolean found = false; //Boolean to state if the team number was found in the array or not
+		
+		for(int i = 0; i < teams.length; i++) { //Cycle through all of the positions
+			if(teams[i] == teamNumber && !found) { //If it found a match...
+				value = i; //Store the position into value
+				found = true; //Flag that the number has been found
+			}
+		}
+		
+		if(found) { //If the team already exists...
+			scores[value] = scores[value] + score;//Add the new score to their total
+			gears[value] = gears[value] + gear; //Add the new gears to their total
+			climbs[value] = climbs[value] + climb; //Add the new climb rank to their total
+			numMat[value]++; //Increase the number of matches they've played in
+		} else { //If the team doesn't already exist...
+			addTeam(teamNumber, score, gear, climb); //Add a new team with the requested information
+		}
+		doAverages(); //Calculate the new averages
+	}
+	
+	void addTeam(int teamNumber, int score, int gear, int climb) { //Method for adding a team
+		try {//Try to locate an empty slot. Empty is defined by the team value being 0
+			int value = 0; //Used to save the position in the array
+			boolean emptySlot = false; //Boolean to state if there is an empty slot or not
+			for(int i = 0; i < teams.length; i++) {
+				if(teams[i] == 0 && !emptySlot) {//If it found an empty slot...
+					value = i;//Store the position into value
+					emptySlot = true; //Flag that there is a slot
+				}
+			}
+			
+			if(emptySlot) {//If a slot has been found...
+				teams[value] = teamNumber;//Save the team number
+				scores[value] = score;//Save the score
+				gears[value] = gear;//Save the number of gears
+				climbs[value] = climb;//Save the climb rank
+				numMat[value] = 1;//Set their number of matches to 1
+			} else {//If there isn't an empty slot...
+				@SuppressWarnings("unused")
+				//Warn that there are no slots left
+				Warning warning = new Warning("Too many teams. The maximum number of teams is " + teams.length);
+			}
+			
+		} catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	void fillRandom(int amount) {//Method for filling random information
 		if(amount > teams.length) {
 			@SuppressWarnings("unused")
@@ -370,5 +376,15 @@ public class Teams {
 			}
 		}
 		doAverages();//Calculate the averages
+	}
+	
+	void doAverages() { //Method to calculate averages
+		for(int i = 0; i < teams.length; i++) {
+			if(numMat[i] != 0) { //To keep from dividing by zero
+				scoAve[i] = (double) scores[i] / numMat[i]; //Calculate score averages
+				gearAve[i] = (double) gears[i] / numMat[i]; //Calculate gear averages
+				climbAve[i] = (double) climbs[i] / numMat[i]; //Calculate climb averages
+			}
+		}
 	}
 }

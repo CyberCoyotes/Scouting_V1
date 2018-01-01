@@ -8,38 +8,44 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 public class Window extends JFrame implements ActionListener {
+	
 	Teams teamInfo = new Teams();
+	
+	int showerHeight = 685;
 	
 	private static final long serialVersionUID = 1L;
 	
+	JTextField teamInput = new JTextField("");
+	JTextField scoreInput = new JTextField("");
+	JTextField gearInput = new JTextField("");
+	JTextField climbInput = new JTextField("");
+	JTextField randomInput = new JTextField("");
+	
 	JButton submitButton = new JButton("Submit");
-	JTextField teamNumField = new JTextField("");
-	JTextField teamScore = new JTextField("");
-	JTextField gearText = new JTextField("");
-	JTextField climbRankText = new JTextField("");
-	JTextField numRand = new JTextField("");
-	JButton clear = new JButton("Delete All Info");
-	JButton random = new JButton("Random values");
+	JButton clearButton = new JButton("Delete All Info");
+	JButton randomButton = new JButton("Random values");
+	JToggleButton showTeamButton = new JToggleButton("Show team");
 	JButton blank = new JButton("I'm  i n v i s i b l e");
 	
-	JTextArea teamShower = new JTextArea("");
-	JTextArea scoShower = new JTextArea("");
-	JTextArea gearShower = new JTextArea("");
-	JTextArea scoAveShower = new JTextArea("");
-	JTextArea gearAveShower = new JTextArea("");
-	JTextArea climbAveShower = new JTextArea("");
+	JEditorPane teamShower = new JEditorPane("text/html", "");
+	JEditorPane scoreShower = new JEditorPane("text/html", "");
+	JEditorPane gearShower = new JEditorPane("text/html", "");
+	JEditorPane aveScoreShower = new JEditorPane("text/html", "");
+	JEditorPane aveGearShower = new JEditorPane("text/html", "");
+	JEditorPane aveClimbShower = new JEditorPane("text/html", "");
 	
-	JButton teams = new JButton("Team");
-	JButton scores = new JButton("Total points");
-	JButton gears = new JButton("Total gears");
-	JButton scoAve = new JButton("Average score");
-	JButton gearAve = new JButton("Average gears");
-	JButton climbAve = new JButton("Average climb");
+	JButton teamSort = new JButton("Team");
+	JButton scoreSort = new JButton("Total points");
+	JButton gearSort = new JButton("Total gears");
+	JButton aveScoreSort = new JButton("Average score");
+	JButton aveGearSort = new JButton("Average gears");
+	JButton aveClimbSort = new JButton("Average climb");
 	
 	int sortSelection = 1;
 	
@@ -57,93 +63,97 @@ public class Window extends JFrame implements ActionListener {
 		});
 		
 		Font font = new Font(Font.SERIF, Font.PLAIN, 13);
-		random.setFont(font);
+		randomButton.setFont(font);
 		
-		add(teamNumField);
-		teamNumField.setBounds(5, 5, 120, 20);
-		add(gearText);
-		gearText.setBounds(5, 55, 120, 20);
-		add(teamScore);
-		teamScore.setBounds(5, 30, 120, 20);
-		add(climbRankText);
-		climbRankText.setBounds(5, 80, 120, 20);
+		add(teamInput);
+		teamInput.setBounds(5, 5, 120, 20);
+		add(gearInput);
+		gearInput.setBounds(5, 55, 120, 20);
+		add(scoreInput);
+		scoreInput.setBounds(5, 30, 120, 20);
+		add(climbInput);
+		climbInput.setBounds(5, 80, 120, 20);
 		add(submitButton);
 		submitButton.setBounds(5, 105, 120, 20);
 		submitButton.setBackground(Color.GREEN);
-		add(clear);
-		clear.setBounds(5, 130, 120, 20);
-		clear.setBackground(Color.RED);
-		add(random);
-		random.setBounds(5, 205, 120, 20);
-		add(numRand);
-		numRand.setBounds(5, 180, 120, 20);
+		add(showTeamButton);
+		showTeamButton.setBounds(5, 130, 120, 20);
+		showTeamButton.setBackground(Color.CYAN);
+		add(clearButton);
+		clearButton.setBounds(5, 155, 120, 20);
+		clearButton.setBackground(Color.RED);
+		add(randomButton);
+		randomButton.setBounds(5, 230, 120, 20);
+		add(randomInput);
+		randomInput.setBounds(5, 205, 120, 20);
 		
-		add(teams);
-		teams.setBounds(130, 5, 120, 20);
-		teams.setBackground(Color.YELLOW);
-		teams.setForeground(Color.BLACK);
-		add(scores);
-		scores.setBounds(255, 5, 120, 20);
-		scores.setBackground(Color.BLUE);
-		scores.setForeground(Color.WHITE);
-		add(gears);
-		gears.setBounds(380, 5, 120, 20);
-		gears.setBackground(Color.BLUE);
-		gears.setForeground(Color.WHITE);
-		add(scoAve);
-		scoAve.setBounds(505, 5, 120, 20);
-		scoAve.setBackground(Color.BLUE);
-		scoAve.setForeground(Color.WHITE);
-		add(gearAve);
-		gearAve.setBounds(630, 5, 120, 20);
-		gearAve.setBackground(Color.BLUE);
-		gearAve.setForeground(Color.WHITE);
-		add(climbAve);
-		climbAve.setBounds(755, 5, 120, 20);
-		climbAve.setBackground(Color.BLUE);
-		climbAve.setForeground(Color.WHITE);
+		add(teamSort);
+		teamSort.setBounds(130, 5, 120, 20);
+		teamSort.setBackground(Color.YELLOW);
+		teamSort.setForeground(Color.BLACK);
+		add(scoreSort);
+		scoreSort.setBounds(255, 5, 120, 20);
+		scoreSort.setBackground(Color.BLUE);
+		scoreSort.setForeground(Color.WHITE);
+		add(gearSort);
+		gearSort.setBounds(380, 5, 120, 20);
+		gearSort.setBackground(Color.BLUE);
+		gearSort.setForeground(Color.WHITE);
+		add(aveScoreSort);
+		aveScoreSort.setBounds(505, 5, 120, 20);
+		aveScoreSort.setBackground(Color.BLUE);
+		aveScoreSort.setForeground(Color.WHITE);
+		add(aveGearSort);
+		aveGearSort.setBounds(630, 5, 120, 20);
+		aveGearSort.setBackground(Color.BLUE);
+		aveGearSort.setForeground(Color.WHITE);
+		add(aveClimbSort);
+		aveClimbSort.setBounds(755, 5, 120, 20);
+		aveClimbSort.setBackground(Color.BLUE);
+		aveClimbSort.setForeground(Color.WHITE);
 		
 		add(teamShower);
-		teamShower.setBounds(130, 30, 120, 640);
+		teamShower.setBounds(130, 30, 120, showerHeight);
 		teamShower.setBackground(Color.LIGHT_GRAY);
 		teamShower.setEditable(false);
-		add(scoShower);
-		scoShower.setBounds(255, 30, 120, 640);
-		scoShower.setBackground(Color.LIGHT_GRAY);
-		scoShower.setEditable(false);
+		add(scoreShower);
+		scoreShower.setBounds(255, 30, 120, showerHeight);
+		scoreShower.setBackground(Color.LIGHT_GRAY);
+		scoreShower.setEditable(false);
 		add(gearShower);
-		gearShower.setBounds(380, 30, 120, 640);
+		gearShower.setBounds(380, 30, 120, showerHeight);
 		gearShower.setBackground(Color.LIGHT_GRAY);
 		gearShower.setEditable(false);
-		add(scoAveShower);
-		scoAveShower.setBounds(505, 30, 120, 640);
-		scoAveShower.setBackground(Color.LIGHT_GRAY);
-		scoAveShower.setEditable(false);
-		add(gearAveShower);
-		gearAveShower.setBounds(630, 30, 120, 640);
-		gearAveShower.setBackground(Color.LIGHT_GRAY);
-		gearAveShower.setEditable(false);
-		add(climbAveShower);
-		climbAveShower.setBounds(755, 30, 120, 640);
-		climbAveShower.setBackground(Color.LIGHT_GRAY);
-		climbAveShower.setEditable(false);
+		add(aveScoreShower);
+		aveScoreShower.setBounds(505, 30, 120, showerHeight);
+		aveScoreShower.setBackground(Color.LIGHT_GRAY);
+		aveScoreShower.setEditable(false);
+		add(aveGearShower);
+		aveGearShower.setBounds(630, 30, 120, showerHeight);
+		aveGearShower.setBackground(Color.LIGHT_GRAY);
+		aveGearShower.setEditable(false);
+		add(aveClimbShower);
+		aveClimbShower.setBounds(755, 30, 120, showerHeight);
+		aveClimbShower.setBackground(Color.LIGHT_GRAY);
+		aveClimbShower.setEditable(false);
 		
-		teams.addActionListener(this);
-		scores.addActionListener(this);
-		gears.addActionListener(this);
-		scoAve.addActionListener(this);
-		gearAve.addActionListener(this);
-		climbAve.addActionListener(this);
+		teamSort.addActionListener(this);
+		scoreSort.addActionListener(this);
+		gearSort.addActionListener(this);
+		aveScoreSort.addActionListener(this);
+		aveGearSort.addActionListener(this);
+		aveClimbSort.addActionListener(this);
 		
 		submitButton.addActionListener(this);
-		clear.addActionListener(this);
-		random.addActionListener(this);
+		showTeamButton.addActionListener(this);
+		clearButton.addActionListener(this);
+		randomButton.addActionListener(this);
 		
 		add(blank);
 		blank.setVisible(false);
 		
-		String[] string = teamInfo.sort(teamInfo.teams);
-		displayData(string);
+		String[] sortOutput = teamInfo.sort(teamInfo.teams);
+		displayData(sortOutput);
 		randomColors();
 	}
 
@@ -155,10 +165,10 @@ public class Window extends JFrame implements ActionListener {
 		if(e.getSource() == submitButton) {
 			int team = 0, score = 0, gears = 0, climbRank = 0;
 			try {
-				team = Integer.parseInt(teamNumField.getText());
-				score = Integer.parseInt(teamScore.getText());
-				gears = Integer.parseInt(gearText.getText());
-				climbRank = Integer.parseInt(climbRankText.getText());
+				team = Integer.parseInt(teamInput.getText());
+				score = Integer.parseInt(scoreInput.getText());
+				gears = Integer.parseInt(gearInput.getText());
+				climbRank = Integer.parseInt(climbInput.getText());
 			} catch(java.lang.NumberFormatException ex) {
 				Warning warning = new Warning("You MUST enter numeric values");
 				return;
@@ -168,121 +178,135 @@ public class Window extends JFrame implements ActionListener {
 				Warning warning = new Warning("Climbing rank must be between 1 and 5.");
 			} else {
 				teamInfo.updateTeam(team, score, gears, climbRank);
-				teamNumField.setText("");
-				teamScore.setText("");
-				gearText.setText("");
-				climbRankText.setText("");
+				teamInput.setText("");
+				scoreInput.setText("");
+				gearInput.setText("");
+				climbInput.setText("");
 			}
 			
 		}
-		if(e.getSource() == clear) {
+		if(e.getSource() == clearButton) {
 			teamInfo.clear();
 		}
 		
-		if(e.getSource() == teams) {
+		if(e.getSource() == teamSort) {
 			sortSelection = 1;
 		}
-		if(e.getSource() == scores) {
+		if(e.getSource() == scoreSort) {
 			sortSelection = 2;
 		}
-		if(e.getSource() == gears) {
+		if(e.getSource() == gearSort) {
 			sortSelection = 3;
 		}
-		if(e.getSource() == scoAve) {
+		if(e.getSource() == aveScoreSort) {
 			sortSelection = 4;
 		}
-		if(e.getSource() == gearAve) {
+		if(e.getSource() == aveGearSort) {
 			sortSelection = 5;
 		}
-		if(e.getSource() == climbAve) {
+		if(e.getSource() == aveClimbSort) {
 			sortSelection = 6;
 		}
-		if(e.getSource() == random) {
+		if(e.getSource() == randomButton) {
 			teamInfo.clear();
 			try {
-				teamInfo.fillRandom(Integer.parseInt(numRand.getText()));
+				teamInfo.fillRandom(Integer.parseInt(randomInput.getText()));
 			} catch(java.lang.NumberFormatException ex) {
 				teamInfo.fillRandom(teamInfo.teams.length);
 			}
 		}
-		
+		if(e.getSource() == showTeamButton) {
+			if(showTeamButton.isSelected()) {
+				int team = 0;
+				try {
+					team = Integer.parseInt(teamInput.getText());
+				} catch(java.lang.NumberFormatException ex) {
+					Warning warning = new Warning("You MUST enter numeric values");
+					return;
+				}
+				
+				teamInfo.bold(true, team);
+			} else {
+				teamInfo.bold(false, 0);
+			}
+		}
 		sort();
 		teamInfo.save();
 	}
 	
 	void sort() {
-		String[] string;
+		String[] sortOutput;
 		
-		teams.setBackground(Color.BLUE);
-		teams.setForeground(Color.WHITE);
-		scores.setBackground(Color.BLUE);
-		scores.setForeground(Color.WHITE);
-		gears.setBackground(Color.BLUE);
-		gears.setForeground(Color.WHITE);
-		scoAve.setBackground(Color.BLUE);
-		scoAve.setForeground(Color.WHITE);
-		gearAve.setBackground(Color.BLUE);
-		gearAve.setForeground(Color.WHITE);
-		climbAve.setBackground(Color.BLUE);
-		climbAve.setForeground(Color.WHITE);
+		teamSort.setBackground(Color.BLUE);
+		teamSort.setForeground(Color.WHITE);
+		scoreSort.setBackground(Color.BLUE);
+		scoreSort.setForeground(Color.WHITE);
+		gearSort.setBackground(Color.BLUE);
+		gearSort.setForeground(Color.WHITE);
+		aveScoreSort.setBackground(Color.BLUE);
+		aveScoreSort.setForeground(Color.WHITE);
+		aveGearSort.setBackground(Color.BLUE);
+		aveGearSort.setForeground(Color.WHITE);
+		aveClimbSort.setBackground(Color.BLUE);
+		aveClimbSort.setForeground(Color.WHITE);
 		
 		switch(sortSelection) {
 		case 1:
-			teams.setBackground(Color.YELLOW);
-			teams.setForeground(Color.BLACK);
-			string = teamInfo.sort(teamInfo.teams);
-			displayData(string);
+			teamSort.setBackground(Color.YELLOW);
+			teamSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.teams);
+			displayData(sortOutput);
 			break;
 		case 2:
-			scores.setBackground(Color.YELLOW);
-			scores.setForeground(Color.BLACK);
-			string = teamInfo.sort(teamInfo.scores);
-			displayData(string);
+			scoreSort.setBackground(Color.YELLOW);
+			scoreSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.scores);
+			displayData(sortOutput);
 			break;
 		case 3:
-			gears.setBackground(Color.YELLOW);
-			gears.setForeground(Color.BLACK);
-			string = teamInfo.sort(teamInfo.gears);
-			displayData(string);
+			gearSort.setBackground(Color.YELLOW);
+			gearSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.gears);
+			displayData(sortOutput);
 			break;
 		case 4:
-			scoAve.setBackground(Color.YELLOW);
-			scoAve.setForeground(Color.BLACK);
-			string = teamInfo.sort(teamInfo.scoAve);
-			displayData(string);
+			aveScoreSort.setBackground(Color.YELLOW);
+			aveScoreSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.scoAve);
+			displayData(sortOutput);
 			break;
 		case 5:
-			gearAve.setBackground(Color.YELLOW);
-			gearAve.setForeground(Color.BLACK);
-			string = teamInfo.sort(teamInfo.gearAve);
-			displayData(string);
+			aveGearSort.setBackground(Color.YELLOW);
+			aveGearSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.gearAve);
+			displayData(sortOutput);
 			break;
 		case 6:
-			climbAve.setBackground(Color.YELLOW);
-			climbAve.setForeground(Color.BLACK);
-			string = teamInfo.sort(teamInfo.climbAve);
-			displayData(string);
+			aveClimbSort.setBackground(Color.YELLOW);
+			aveClimbSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.climbAve);
+			displayData(sortOutput);
 			break;
 		}
 	}
 	
-	void displayData(String[] string) {
-		teamShower.setText(string[0]);
-		scoShower.setText(string[1]);
-		gearShower.setText(string[2]);
-		scoAveShower.setText(string[3]);
-		gearAveShower.setText(string[4]);
-		climbAveShower.setText(string[5]);
+	void displayData(String[] sortData) {
+		teamShower.setText(sortData[0]);
+		scoreShower.setText(sortData[1]);
+		gearShower.setText(sortData[2]);
+		aveScoreShower.setText(sortData[3]);
+		aveGearShower.setText(sortData[4]);
+		aveClimbShower.setText(sortData[5]);
 		
 	}
 	
 	private void randomColors() {
 		Thread thread = new Thread(() -> {
 			while(true) {
-				Random randomy = new Random();
-				Color myColor = new Color(randomy.nextInt(255), randomy.nextInt(255), randomy.nextInt(255));
-				random.setBackground(myColor);
-				random.setForeground(myColor.getBlue() < 100 && myColor.getGreen() < 100 && myColor.getRed() < 100 ? Color.WHITE : Color.BLACK);
+				Random random = new Random();
+				Color myColor = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+				randomButton.setBackground(myColor);
+				randomButton.setForeground(myColor.getBlue() < 100 && myColor.getGreen() < 100 && myColor.getRed() < 100 ? Color.WHITE : Color.BLACK);
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
