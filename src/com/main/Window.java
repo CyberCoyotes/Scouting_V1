@@ -74,13 +74,13 @@ public class Window extends JFrame implements ActionListener {
 			}
 		});
 		
+		@SuppressWarnings("unused")
 		Thread thread = new Thread(() -> {
 			while(true) {
 				System.out.println(getWidth());
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

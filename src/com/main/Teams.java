@@ -411,13 +411,41 @@ public class Teams {
 		} else {
 			clear();
 			Random random = new Random();
+			{
+			int o = random.nextInt(3);
+			int g = random.nextInt(3 + o);
+			int f = random.nextInt(14 + o);
+			int c = random.nextInt(1 + o);
 			int matches = random.nextInt(3)+10;
-			int times = 1;
 			for(int j = 0; j < matches; j++) {
-				updateTeam(3603, random.nextInt(301), random.nextInt(8), random.nextInt(5)+1, random.nextInt(31));
+				int gear = random.nextInt(5) + g;
+				int gearScore = gear;
+				int fuel = random.nextInt(16) + f;
+				int fuelScore = fuel;
+				int climb = random.nextInt(4) + c;
+				int climbScore = climb;
+				int score = 0;
+				if(fuel % 3 > 0) {
+					fuelScore = fuel - (fuel % 3);
+				}
+				score = fuelScore/3;
+				
+				if(gear >= 3) {
+					gearScore = gear + 40;
+				}
+				score = score +gearScore;
+				if(climb >= 3) {
+					climbScore = climb + 40;
+				}
+				score = score + climbScore;
+				updateTeam(3603, score, gear, climb, fuel);
 			}
+			}
+			
 			for(int i = 1; i < amount; i++) {
+				int times = 1;
 				int randTeam = random.nextInt(highestPossibleTeamNumber) + 1;
+				int matches = random.nextInt(3)+10;
 				for(int x = 0; x < amount; x++) {
 					while(randTeam == teams[x]) {
 						System.out.println("Found! " + times);
@@ -426,10 +454,32 @@ public class Teams {
 						times++;
 					}
 				}
-				times = 1;
-				matches = random.nextInt(3)+10;
+				int o = random.nextInt(3);
+				int g = random.nextInt(3 + o);
+				int f = random.nextInt(14 + o);
+				int c = random.nextInt(2 + o);
 				for(int j = 0; j < matches; j++) {
-					updateTeam(randTeam, random.nextInt(301), random.nextInt(9), random.nextInt(5)+1, random.nextInt(31));
+					int gear = random.nextInt(5) + g;
+					int gearScore = gear*20;
+					int fuel = random.nextInt(16) + f;
+					int fuelScore = fuel;
+					int climb = random.nextInt(4) + c;
+					int climbScore = climb;
+					int score = 0;
+					if(fuel % 3 > 0) {
+						fuelScore = fuel - (fuel % 3);
+					}
+					score = fuelScore/3;
+					
+					if(gear >= 3) {
+						gearScore = gearScore + 40;
+					}
+					score = score + gearScore;
+					if(climb >= 3) {
+						climbScore = climb + 40;
+					}
+					score = score + climbScore;
+					updateTeam(randTeam, score, gear, climb, fuel);
 				}
 			}
 		}
