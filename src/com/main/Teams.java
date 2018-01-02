@@ -14,7 +14,7 @@ public class Teams {
 	
 	int highestPossibleTeamNumber = 6999;
 	int not = 40; //Number of teams
-	int NOATAD = 6; //Number of arrays that are displayed
+	int NOATAD = 8; //Number of arrays that are displayed
 	
 	int teams[] = new int[not]; //Array to store team numbers
 	int scores[] = new int[not]; //Array to store scores
@@ -24,6 +24,14 @@ public class Teams {
 	int climbs[] = new int[not]; //Array to store total number of climb points
 	double climbAve[] = new double[not]; //Array to store average number of climb points
 	int gears[] = new int[not]; //Array to store total number of gears
+	int fuels[] = new int[not];
+	double fuelAve[] = new double[not];
+	double composite[] = new double[not];
+	
+	double scoreWeight;
+	double gearWeight;
+	double climbWeight;
+	double fuelWeight;
 	
 	boolean embolden = false;
 	int teamNum = 0;
@@ -31,7 +39,8 @@ public class Teams {
 	String h = "<b><span style=\"background-color: #FFFF00\">";
 	String endH = "</span></b><br>";
 	
-	DecimalFormat d = new DecimalFormat("#.00");
+	DecimalFormat averagesFormat = new DecimalFormat("#.00");
+	DecimalFormat compFormat = new DecimalFormat("#0.000");
 	
 	public Teams() {
 		load(); //Reload any saved data
@@ -56,6 +65,9 @@ public class Teams {
         double temp6 = 0; //Temporary average gear
         int temp7 = 0; //Temporary total climb rank
         double temp8 = 0; //Temporary average climb rank
+        int temp9 = 0;
+        double temp10 = 0;
+        double temp11 = 0;
         
         //This is a bubble sort algorithm for ordering the stats
         for(int i=0; i < n; i++){  
@@ -69,6 +81,9 @@ public class Teams {
 			        temp6 = gearAve[j-1];
 			        temp7 = climbs[j-1];
 			        temp8 = climbAve[j-1];
+			        temp9 = fuels[j-1];
+			        temp10 = fuelAve[j-1];
+			        temp11 = composite[j-1];
 			        
 			        scores[j-1] = scores[j];
 			        teams[j-1] = teams[j];
@@ -78,6 +93,9 @@ public class Teams {
 			        gearAve[j-1] = gearAve[j];
 			        climbs[j-1] = climbs[j];
 			        climbAve[j-1] = climbAve[j];
+			        fuels[j-1] = fuels[j];
+			        fuelAve[j-1] = fuelAve[j];
+			        composite[j-1] = composite[j];
 			        
 			        scores[j] = temp;
 			        teams[j] = temp2;
@@ -87,6 +105,9 @@ public class Teams {
 			        gearAve[j] = temp6;
 			        climbs[j] = temp7;
 			        climbAve[j] = temp8;
+			        fuels[j] = temp9;
+			        fuelAve[j] = temp10;
+			        composite[j] = temp11;
 		        }
 	        }  
         }
@@ -94,6 +115,7 @@ public class Teams {
 	}
 	
 	String[] formatedInfo() {
+		boolean found = false;
 		String[] string = new String[NOATAD];
         for(int i = 0; i < string.length; i++) {
         	string[i] = "<font face=\"Arial\">";
@@ -104,18 +126,27 @@ public class Teams {
     				string[0] = string[0] + h + teams[i] + endH;
 	        		string[1] = string[1] + h + scores[i] + endH;
 	        		string[2] = string[2] + h + gears[i] + endH;
-	        		string[3] = string[3] + h + d.format(scoAve[i]) + endH;
-	        		string[4] = string[4] + h + d.format(gearAve[i]) + endH;
-	        		string[5] = string[5] + h + d.format(climbAve[i]) + endH;
+	        		string[3] = string[3] + h + averagesFormat.format(scoAve[i]) + endH;
+	        		string[4] = string[4] + h + averagesFormat.format(gearAve[i]) + endH;
+	        		string[5] = string[5] + h + averagesFormat.format(climbAve[i]) + endH;
+	        		string[6] = string[6] + h + averagesFormat.format(fuelAve[i]) + endH;
+	        		string[7] = string[7] + h + compFormat.format(composite[i]) + endH;
+	        		found = true;
         		} else {
         			string[0] = string[0] + teams[i] + "<br>";
 	        		string[1] = string[1] + scores[i] + "<br>";
 	        		string[2] = string[2] + gears[i] + "<br>";
-	        		string[3] = string[3] + d.format(scoAve[i]) + "<br>";
-	        		string[4] = string[4] + d.format(gearAve[i]) + "<br>";
-	        		string[5] = string[5] + d.format(climbAve[i]) + "<br>";
+	        		string[3] = string[3] + averagesFormat.format(scoAve[i]) + "<br>";
+	        		string[4] = string[4] + averagesFormat.format(gearAve[i]) + "<br>";
+	        		string[5] = string[5] + averagesFormat.format(climbAve[i]) + "<br>";
+	        		string[6] = string[6] + averagesFormat.format(fuelAve[i]) + "<br>";
+	        		string[7] = string[7] + compFormat.format(composite[i]) + "<br>";
         		}
         	}
+        }
+        if(!found && teamNum != 0) {
+        	@SuppressWarnings("unused")
+			Warning warning = new Warning("Team " + teamNum + " is not in the database.");
         }
         for(int i = 0; i < string.length; i++) {
         	string[i] = string[i] + "</font face=\"Arial\"";
@@ -133,6 +164,10 @@ public class Teams {
         double temp6 = 0;
         int temp7 = 0;
         double temp8 = 0;
+        int temp9 = 0;
+        double temp10 = 0;
+        double temp11 = 0;
+        
         for(int i=0; i < n; i++){  
 	        for(int j=1; j < (n-i); j++) {
 	        	if(by == teams) {
@@ -145,6 +180,9 @@ public class Teams {
 				        temp6 = gearAve[j-1];
 				        temp7 = climbs[j-1];
 				        temp8 = climbAve[j-1];
+				        temp9 = fuels[j-1];
+				        temp10 = fuelAve[j-1];
+				        temp11 = composite[j-1];
 				        
 				        scores[j-1] = scores[j];
 				        teams[j-1] = teams[j];
@@ -154,6 +192,9 @@ public class Teams {
 				        gearAve[j-1] = gearAve[j];
 				        climbs[j-1] = climbs[j];
 				        climbAve[j-1] = climbAve[j];
+				        fuels[j-1] = fuels[j];
+				        fuelAve[j-1] = fuelAve[j];
+				        composite[j-1] = composite[j];
 				        
 				        scores[j] = temp;
 				        teams[j] = temp2;
@@ -163,6 +204,9 @@ public class Teams {
 				        gearAve[j] = temp6;
 				        climbs[j] = temp7;
 				        climbAve[j] = temp8;
+				        fuels[j] = temp9;
+				        fuelAve[j] = temp10;
+				        composite[j] = temp11;
 			        }
 	        	} else {
 	        		if(by[j-1] < by[j]){  
@@ -174,6 +218,9 @@ public class Teams {
 				        temp6 = gearAve[j-1];
 				        temp7 = climbs[j-1];
 				        temp8 = climbAve[j-1];
+				        temp9 = fuels[j-1];
+				        temp10 = fuelAve[j-1];
+				        temp11 = composite[j-1];
 				        
 				        scores[j-1] = scores[j];
 				        teams[j-1] = teams[j];
@@ -183,6 +230,9 @@ public class Teams {
 				        gearAve[j-1] = gearAve[j];
 				        climbs[j-1] = climbs[j];
 				        climbAve[j-1] = climbAve[j];
+				        fuels[j-1] = fuels[j];
+				        fuelAve[j-1] = fuelAve[j];
+				        composite[j-1] = composite[j];
 				        
 				        scores[j] = temp;
 				        teams[j] = temp2;
@@ -192,6 +242,9 @@ public class Teams {
 				        gearAve[j] = temp6;
 				        climbs[j] = temp7;
 				        climbAve[j] = temp8;
+				        fuels[j] = temp9;
+				        fuelAve[j] = temp10;
+				        composite[j] = temp11;
 			        }
 	        	}
 	        }  
@@ -206,39 +259,38 @@ public class Teams {
 			FileWriter scoreWriter1 = new FileWriter("scores.txt");
 			FileWriter gearWriter1 = new FileWriter("gears.txt");
 			FileWriter numberMatches1 = new FileWriter("numMat.txt");
-			FileWriter scoAve1 = new FileWriter("scoAve.txt");
-			FileWriter gearAve1 = new FileWriter("gearAve.txt");
 			FileWriter climbWriter1 = new FileWriter("climbs.txt");
-			FileWriter climbAveWriter1 = new FileWriter("climbAve.txt");
+			FileWriter fuelWriter1 = new FileWriter("fuel.txt");
+			FileWriter comps1 = new FileWriter("comps1.txt");
 			
 			PrintWriter teamWriter2 = new PrintWriter(teamWriter1);
 			PrintWriter scoreWriter2 = new PrintWriter(scoreWriter1);
 			PrintWriter gearWriter2 = new PrintWriter(gearWriter1);			
-			PrintWriter numberMatches2 = new PrintWriter(numberMatches1);			
-			PrintWriter scoAve2 = new PrintWriter(scoAve1);			
-			PrintWriter gearAve2 = new PrintWriter(gearAve1);
+			PrintWriter numberMatches2 = new PrintWriter(numberMatches1);
 			PrintWriter climbWriter2 = new PrintWriter(climbWriter1);
-			PrintWriter climbAveWriter2 = new PrintWriter(climbAveWriter1);
+			PrintWriter fuelWriter2 = new PrintWriter(fuelWriter1);
+			PrintWriter comps2 = new PrintWriter(comps1);
 			
 			for(int i = 0; i < teams.length; i++) {
 				teamWriter2.println(teams[i]);
 				scoreWriter2.println(scores[i]);
 				gearWriter2.println(gears[i]);
 				numberMatches2.println(numMat[i]);
-				scoAve2.println(scoAve[i]);
-				gearAve2.println(gearAve[i]);
 				climbWriter2.println(climbs[i]);
-				climbAveWriter2.println(climbAve[i]);
+				fuelWriter2.println(fuels[i]);
 			}
+			comps2.println(scoreWeight);
+			comps2.println(gearWeight);
+			comps2.println(climbWeight);
+			comps2.println(fuelWeight);
 			
 			teamWriter2.close();
 			scoreWriter2.close();
 			gearWriter2.close();
 			numberMatches2.close();
-			scoAve2.close();
-			gearAve2.close();
 			climbWriter2.close();
-			climbAveWriter2.close();
+			fuelWriter2.close();
+			comps2.close();
 			
 		} catch(IOException ex) {
 		}
@@ -253,6 +305,9 @@ public class Teams {
 		gearAve = new double[not];
 		climbs = new int[not];
 		climbAve = new double[not];
+		fuels = new int[not];
+		fuelAve = new double[not];
+		composite = new double[not];
 	}
 	
 	@SuppressWarnings("resource")
@@ -262,31 +317,32 @@ public class Teams {
 			FileReader scoreReader1 = new FileReader("scores.txt");
 			FileReader gearReader1 = new FileReader("gears.txt");
 			FileReader numberMatches1 = new FileReader("numMat.txt");
-			FileReader scoAve1 = new FileReader("scoAve.txt");
-			FileReader gearAve1 = new FileReader("gearAve.txt");
 			FileReader climbs1 = new FileReader("climbs.txt");
-			FileReader climbAve1 = new FileReader("climbAve.txt");
+			FileReader fuel1 = new FileReader("fuel.txt");
+			FileReader comps1 = new FileReader("comps1.txt");
 			
 			BufferedReader teamReader2 = new BufferedReader(teamReader1);
 			BufferedReader scoreReader2 = new BufferedReader(scoreReader1);
 			BufferedReader gearReader2 = new BufferedReader(gearReader1);
 			BufferedReader numberMatches2 = new BufferedReader(numberMatches1);
-			BufferedReader scoAve2 = new BufferedReader(scoAve1);
-			BufferedReader gearAve2 = new BufferedReader(gearAve1);
 			BufferedReader climbs2 = new BufferedReader(climbs1);
-			BufferedReader climbAve2 = new BufferedReader(climbAve1);
+			BufferedReader fuel2 = new BufferedReader(fuel1);
+			BufferedReader comps2 = new BufferedReader(comps1);
 			
 			for(int i = 0; i < teams.length; i++) {
 				teams[i] = Integer.parseInt(teamReader2.readLine());
 				scores[i] = Integer.parseInt(scoreReader2.readLine());
 				gears[i] = Integer.parseInt(gearReader2.readLine());
 				numMat[i] = Integer.parseInt(numberMatches2.readLine());
-				scoAve[i] = Double.parseDouble(scoAve2.readLine());
-				gearAve[i] = Double.parseDouble(gearAve2.readLine());
 				climbs[i] = Integer.parseInt(climbs2.readLine());
-				climbAve[i] = Double.parseDouble(climbAve2.readLine());
+				fuels[i] = Integer.parseInt(fuel2.readLine());
 			}
+			scoreWeight = Double.parseDouble(comps2.readLine());
+			gearWeight = Double.parseDouble(comps2.readLine());
+			climbWeight = Double.parseDouble(comps2.readLine());
+			fuelWeight = Double.parseDouble(comps2.readLine());
 			
+			doAverages();
 		} catch(IOException ex) {
 			out.println("Data file does not exist");
 		} catch(java.lang.NumberFormatException ex) {
@@ -295,7 +351,7 @@ public class Teams {
 		}
 	}
 	
-	void updateTeam(int teamNumber, int score, int gear, int climb) { //Method to update team info after a match
+	void updateTeam(int teamNumber, int score, int gear, int climb, int fuel) { //Method to update team info after a match
 		
 		int value = 0;//Used to find the position of the requested team number in the team array
 		boolean found = false; //Boolean to state if the team number was found in the array or not
@@ -311,14 +367,15 @@ public class Teams {
 			scores[value] = scores[value] + score;//Add the new score to their total
 			gears[value] = gears[value] + gear; //Add the new gears to their total
 			climbs[value] = climbs[value] + climb; //Add the new climb rank to their total
+			fuels[value] = fuels[value] + fuel;
 			numMat[value]++; //Increase the number of matches they've played in
 		} else { //If the team doesn't already exist...
-			addTeam(teamNumber, score, gear, climb); //Add a new team with the requested information
+			addTeam(teamNumber, score, gear, climb, fuel); //Add a new team with the requested information
 		}
 		doAverages(); //Calculate the new averages
 	}
 	
-	void addTeam(int teamNumber, int score, int gear, int climb) { //Method for adding a team
+	void addTeam(int teamNumber, int score, int gear, int climb, int fuel) { //Method for adding a team
 		try {//Try to locate an empty slot. Empty is defined by the team value being 0
 			int value = 0; //Used to save the position in the array
 			boolean emptySlot = false; //Boolean to state if there is an empty slot or not
@@ -334,6 +391,7 @@ public class Teams {
 				scores[value] = score;//Save the score
 				gears[value] = gear;//Save the number of gears
 				climbs[value] = climb;//Save the climb rank
+				fuels[value] = fuel;
 				numMat[value] = 1;//Set their number of matches to 1
 			} else {//If there isn't an empty slot...
 				@SuppressWarnings("unused")
@@ -356,7 +414,7 @@ public class Teams {
 			int matches = random.nextInt(3)+10;
 			int times = 1;
 			for(int j = 0; j < matches; j++) {
-				updateTeam(3603, random.nextInt(200), random.nextInt(7), random.nextInt(5)+1);
+				updateTeam(3603, random.nextInt(301), random.nextInt(8), random.nextInt(5)+1, random.nextInt(31));
 			}
 			for(int i = 1; i < amount; i++) {
 				int randTeam = random.nextInt(highestPossibleTeamNumber) + 1;
@@ -371,7 +429,7 @@ public class Teams {
 				times = 1;
 				matches = random.nextInt(3)+10;
 				for(int j = 0; j < matches; j++) {
-					updateTeam(randTeam, random.nextInt(200), random.nextInt(8), random.nextInt(5)+1);
+					updateTeam(randTeam, random.nextInt(301), random.nextInt(9), random.nextInt(5)+1, random.nextInt(31));
 				}
 			}
 		}
@@ -384,6 +442,9 @@ public class Teams {
 				scoAve[i] = (double) scores[i] / numMat[i]; //Calculate score averages
 				gearAve[i] = (double) gears[i] / numMat[i]; //Calculate gear averages
 				climbAve[i] = (double) climbs[i] / numMat[i]; //Calculate climb averages
+				fuelAve[i] = (double) fuels[i] / numMat[i];
+				composite[i] = (double) fuelWeight * fuelAve[i] + climbWeight * climbAve[i] + gearWeight * gearAve[i] + scoreWeight * scoAve[i];
+				compFormat.format(composite[i]);
 			}
 		}
 	}
