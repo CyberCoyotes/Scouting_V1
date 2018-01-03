@@ -420,7 +420,7 @@ public class Teams {
 				for(int j = 0; j < matches; j++) {
 					int gear = random.nextInt(5) + g;
 					int gearScore = gear*20;
-					int climb = random.nextInt(2) + c;
+					int climb = random.nextInt(3) + c;
 					int climbScore = climb;
 					int score = 0;
 					int fuel;
@@ -466,12 +466,12 @@ public class Teams {
 				for(int j = 0; j < matches; j++) {
 					int gear = random.nextInt(5) + g;
 					int gearScore = gear*20;
-					int climb = random.nextInt(4) + c;
+					int climb = random.nextInt(3) + c;
 					int climbScore = climb;
 					int score = 0;
 					int fuel;
-					if(random.nextInt(100) > 95) {
-						fuel = random.nextInt(30) + 70;
+					if(random.nextInt(100) > 98) {
+						fuel = random.nextInt(15 + f) + 70;
 					} else {
 						fuel = 0;
 					}
