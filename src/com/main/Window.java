@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
@@ -50,6 +51,8 @@ public class Window extends JFrame implements ActionListener {
 	JEditorPane aveFuelShower = new JEditorPane("text/html", "");
 	JEditorPane compositeShower = new JEditorPane("text/html", "");
 	
+	JSlider slider = new JSlider();
+	
 	JButton teamSort = new JButton("Team");
 	JButton scoreSort = new JButton("Total points");
 	JButton gearSort = new JButton("Total gears");
@@ -85,7 +88,6 @@ public class Window extends JFrame implements ActionListener {
 				}
 			}
 		});
-		//thread.start();
 		
 		Font font = new Font(Font.SERIF, Font.PLAIN, 13);
 		randomButton.setFont(font);

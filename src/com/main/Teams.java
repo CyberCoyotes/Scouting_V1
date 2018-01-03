@@ -412,34 +412,39 @@ public class Teams {
 			clear();
 			Random random = new Random();
 			{
-			int o = random.nextInt(3);
-			int g = random.nextInt(3 + o);
-			int f = random.nextInt(14 + o);
-			int c = random.nextInt(1 + o);
-			int matches = random.nextInt(3)+10;
-			for(int j = 0; j < matches; j++) {
-				int gear = random.nextInt(5) + g;
-				int gearScore = gear;
-				int fuel = random.nextInt(16) + f;
-				int fuelScore = fuel;
-				int climb = random.nextInt(4) + c;
-				int climbScore = climb;
-				int score = 0;
-				if(fuel % 3 > 0) {
-					fuelScore = fuel - (fuel % 3);
-				}
-				score = fuelScore/3;
+				int matches = random.nextInt(3)+10;
+				int o = random.nextInt(2);
+				int g = random.nextInt(3 + o);
 				
-				if(gear >= 3) {
-					gearScore = gear + 40;
+				int c = random.nextInt(2 + o) + 1;
+				for(int j = 0; j < matches; j++) {
+					int gear = random.nextInt(5) + g;
+					int gearScore = gear*20;
+					int climb = random.nextInt(2) + c;
+					int climbScore = climb;
+					int score = 0;
+					int fuel;
+					if(random.nextInt(100) > 95) {
+						fuel = random.nextInt(30) + 70;
+					} else {
+						fuel = 0;
+					}
+					int fuelScore = fuel;
+					if(fuel % 3 > 0) {
+						fuelScore = fuel - (fuel % 3);
+					}
+					score = fuelScore/3;
+					
+					if(gear >= 3) {
+						gearScore = gearScore + 40;
+					}
+					score = score + gearScore;
+					if(climb >= 3) {
+						climbScore = climb + 40;
+					}
+					score = score + climbScore;
+					updateTeam(3603, score, gear, climb, fuel);
 				}
-				score = score +gearScore;
-				if(climb >= 3) {
-					climbScore = climb + 40;
-				}
-				score = score + climbScore;
-				updateTeam(3603, score, gear, climb, fuel);
-			}
 			}
 			
 			for(int i = 1; i < amount; i++) {
@@ -454,18 +459,23 @@ public class Teams {
 						times++;
 					}
 				}
-				int o = random.nextInt(3);
+				int o = random.nextInt(2);
 				int g = random.nextInt(3 + o);
 				int f = random.nextInt(14 + o);
-				int c = random.nextInt(2 + o);
+				int c = random.nextInt(2 + o) + 1;
 				for(int j = 0; j < matches; j++) {
 					int gear = random.nextInt(5) + g;
 					int gearScore = gear*20;
-					int fuel = random.nextInt(16) + f;
-					int fuelScore = fuel;
 					int climb = random.nextInt(4) + c;
 					int climbScore = climb;
 					int score = 0;
+					int fuel;
+					if(random.nextInt(100) > 95) {
+						fuel = random.nextInt(30) + 70;
+					} else {
+						fuel = 0;
+					}
+					int fuelScore = fuel;
 					if(fuel % 3 > 0) {
 						fuelScore = fuel - (fuel % 3);
 					}
