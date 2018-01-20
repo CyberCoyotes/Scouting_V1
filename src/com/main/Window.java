@@ -2,6 +2,7 @@ package com.main;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +60,7 @@ public class Window extends JFrame implements ActionListener {
 			}
 		});
 		
+		/*
 		@SuppressWarnings("unused")
 		Thread thread = new Thread(() -> {
 			while(true) {
@@ -70,6 +72,7 @@ public class Window extends JFrame implements ActionListener {
 				}
 			}
 		});
+		*/
 		
 		Font font = new Font(Font.SERIF, Font.PLAIN, 13);
 		randomButton.setFont(font);
