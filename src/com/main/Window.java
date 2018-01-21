@@ -2,7 +2,6 @@ package com.main;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +25,8 @@ public class Window extends JFrame implements ActionListener {
 	JTextField teamInput = new JTextField("");
 	JTextField scoreInput = new JTextField("");
 	JTextField scaleInput = new JTextField("");
+	JTextField switchInput = new JTextField("");
+	JTextField vaultInput = new JTextField("");
 	JTextField showTeamInput = new JTextField("");
 	JTextField randomInput = new JTextField("");
 	
@@ -38,12 +39,16 @@ public class Window extends JFrame implements ActionListener {
 	JEditorPane teamShower = new JEditorPane("text/html", "");
 	JEditorPane aveScoreShower = new JEditorPane("text/html", "");
 	JEditorPane scaleShower = new JEditorPane("text/html", "");
+	JEditorPane switchShower = new JEditorPane("text/html", "");
+	JEditorPane vaultShower = new JEditorPane("text/html", "");
 	
 	JSlider slider = new JSlider();
 	
 	JButton teamSort = new JButton("Team");
 	JButton aveScoreSort = new JButton("Average score");
 	JButton scaleSort = new JButton("Average scale");
+	JButton switchSort = new JButton("Average switch");
+	JButton vaultSort = new JButton("Average vault");
 	
 	int sortSelection = 1;
 	
@@ -83,17 +88,21 @@ public class Window extends JFrame implements ActionListener {
 		scoreInput.setBounds(5, 30, 120, 20);
 		add(scaleInput);
 		scaleInput.setBounds(5, 55, 120, 20);
+		add(switchInput);
+		switchInput.setBounds(5, 80, 120, 20);
+		add(vaultInput);
+		vaultInput.setBounds(5, 105, 120, 20);
 		
 		add(submitButton);
-		submitButton.setBounds(5, 80, 120, 20);
+		submitButton.setBounds(5, 130, 120, 20);
 		submitButton.setBackground(Color.GREEN);
 		add(showTeamInput);
-		showTeamInput.setBounds(5, 155, 120, 20);
+		showTeamInput.setBounds(5, 205, 120, 20);
 		add(showTeamButton);
-		showTeamButton.setBounds(5, 180, 120, 20);
+		showTeamButton.setBounds(5, 230, 120, 20);
 		showTeamButton.setBackground(Color.CYAN);
 		add(clearButton);
-		clearButton.setBounds(5, 105, 120, 20);
+		clearButton.setBounds(5, 155, 120, 20);
 		clearButton.setBackground(Color.RED);
 		add(randomButton);
 		randomButton.setBounds(5, 695, 120, 20);
@@ -112,6 +121,14 @@ public class Window extends JFrame implements ActionListener {
 		scaleSort.setBounds(380, 5, 120, 20);
 		scaleSort.setBackground(Color.BLUE);
 		scaleSort.setForeground(Color.WHITE);
+		add(switchSort);
+		switchSort.setBounds(505, 5, 120, 20);
+		switchSort.setBackground(Color.BLUE);
+		switchSort.setForeground(Color.WHITE);
+		add(vaultSort);
+		vaultSort.setBounds(630, 5, 120, 20);
+		vaultSort.setBackground(Color.BLUE);
+		vaultSort.setForeground(Color.WHITE);
 		
 		add(teamShower);
 		teamShower.setBounds(130, 30, 120, showerHeight);
@@ -125,10 +142,20 @@ public class Window extends JFrame implements ActionListener {
 		scaleShower.setBounds(380, 30, 120, showerHeight);
 		scaleShower.setBackground(Color.LIGHT_GRAY);
 		scaleShower.setEditable(false);
+		add(switchShower);
+		switchShower.setBounds(505, 30, 120, showerHeight);
+		switchShower.setBackground(Color.LIGHT_GRAY);
+		switchShower.setEditable(false);
+		add(vaultShower);
+		vaultShower.setBounds(630, 30, 120, showerHeight);
+		vaultShower.setBackground(Color.LIGHT_GRAY);
+		vaultShower.setEditable(false);
 		
 		teamSort.addActionListener(this);
 		aveScoreSort.addActionListener(this);
 		scaleSort.addActionListener(this);
+		switchSort.addActionListener(this);
+		vaultSort.addActionListener(this);
 		
 		submitButton.addActionListener(this);
 		showTeamButton.addActionListener(this);
@@ -149,19 +176,23 @@ public class Window extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submitButton) {
-			int team = 0, score = 0, scale = 0;
+			int team = 0, score = 0, scale = 0, swi = 0, vault = 0;
 			try {
 				team = Integer.parseInt(teamInput.getText());
 				score = Integer.parseInt(scoreInput.getText());
 				scale = Integer.parseInt(scaleInput.getText());
+				swi = Integer.parseInt(switchInput.getText());
+				vault = Integer.parseInt(vaultInput.getText());
+				teamInfo.updateTeam(team, score, scale, swi, vault);
 			} catch(java.lang.NumberFormatException ex) {
 				Warning warning = new Warning("You MUST enter numeric values");
 				return;
 			}
-			teamInfo.updateTeam(team, score, scale);
 			teamInput.setText("");
 			scoreInput.setText("");
 			scaleInput.setText("");
+			switchInput.setText("");
+			vaultInput.setText("");
 		}
 		if(e.getSource() == clearButton) {
 			teamInfo.clear();
@@ -178,6 +209,12 @@ public class Window extends JFrame implements ActionListener {
 		}
 		if(e.getSource() == scaleSort) {
 			sortSelection = 3;
+		}
+		if(e.getSource() == switchSort) {
+			sortSelection = 4;
+		}
+		if(e.getSource() == vaultSort) {
+			sortSelection = 5;
 		}
 		if(e.getSource() == randomButton) {
 			try {
@@ -214,6 +251,10 @@ public class Window extends JFrame implements ActionListener {
 		aveScoreSort.setForeground(Color.WHITE);
 		scaleSort.setBackground(Color.BLUE);
 		scaleSort.setForeground(Color.WHITE);
+		switchSort.setBackground(Color.BLUE);
+		switchSort.setForeground(Color.WHITE);
+		vaultSort.setBackground(Color.BLUE);
+		vaultSort.setForeground(Color.WHITE);
 		
 		switch(sortSelection) {
 		case 1:
@@ -230,10 +271,19 @@ public class Window extends JFrame implements ActionListener {
 			break;
 		case 3:
 			scaleSort.setBackground(Color.YELLOW);
-			scaleSort.setForeground(Color.WHITE);
+			scaleSort.setForeground(Color.BLACK);
 			sortOutput = teamInfo.sort(teamInfo.scaleAve);
 			displayData(sortOutput);
 			break;
+		case 4:
+			switchSort.setBackground(Color.YELLOW);
+			switchSort.setForeground(Color.BLACK);
+			sortOutput = teamInfo.sort(teamInfo.switchAve);
+			displayData(sortOutput);
+			break;
+		case 5:
+			vaultSort.setBackground(Color.YELLOW);
+			vaultSort.setForeground(Color.BLACK);
 		}
 	}
 	
@@ -241,6 +291,8 @@ public class Window extends JFrame implements ActionListener {
 		teamShower.setText(sortData[0]);
 		aveScoreShower.setText(sortData[1]);
 		scaleShower.setText(sortData[2]);
+		switchShower.setText(sortData[3]);
+		vaultShower.setText(sortData[4]);
 	}
 	
 	private void randomColors() {
